@@ -13,8 +13,13 @@ import java.util.List;
 import java.util.Set;
 
 public class ScanResultsChecker extends BroadcastReceiver {
+    private static long lastCheck = 0;
 
     public void onReceive(Context ctx, Intent i){
+        // Older devices might try to scan constantly. Allow them some rest by checking max. once every 5 seconds
+        if (System.currentTimeMillis() - lastCheck < 5000)
+            return;
+        lastCheck = System.currentTimeMillis();
         // WiFi scan performed
         WifiManager wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
 
