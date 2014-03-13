@@ -4,13 +4,14 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <!--activity
+        <activity
             android:name="be.uhasselt.privacypolice.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
@@ -18,11 +19,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity-->
+        </activity>
         <!-- Receive all scan results in ScanResultsChecker class -->
         <receiver android:name="be.uhasselt.privacypolice.ScanResultsChecker" android:enabled="true">
             <intent-filter>
                 <action android:name="android.net.wifi.SCAN_RESULTS" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
     </application>

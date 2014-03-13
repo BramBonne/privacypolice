@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">Wi-Fi PrivacyPolice</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="done">Installation complete!</string>
+    <string name="doneexpl">Wi-Fi PrivacyPolice will keep running in the background as long as the app is installed.</string>
     <string name="action_settings">Settings</string>
 
 </resources>
