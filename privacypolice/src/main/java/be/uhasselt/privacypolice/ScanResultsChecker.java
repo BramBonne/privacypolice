@@ -14,6 +14,8 @@ import java.util.Set;
 
 public class ScanResultsChecker extends BroadcastReceiver {
     private static long lastCheck = 0;
+    private static Preferences prefs = null;
+    private WifiManager wifiManager = null;
 
     public void onReceive(Context ctx, Intent i){
         // Older devices might try to scan constantly. Allow them some rest by checking max. once every 5 seconds
@@ -21,8 +23,14 @@ public class ScanResultsChecker extends BroadcastReceiver {
             return;
         lastCheck = System.currentTimeMillis();
         // WiFi scan performed
-        WifiManager wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
+        wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
+        prefs = new Preferences(ctx);
 
+        if (prefs.getEnableOnlyAvailableNetworks())
+            enableOnlyAvailableNetworks();
+    }
+
+    public void enableOnlyAvailableNetworks() {
         List<ScanResult> scanResults = wifiManager.getScanResults();
         Set<String> scanSSIDs = new HashSet<String>();
         for (ScanResult scanResult : scanResults) {
