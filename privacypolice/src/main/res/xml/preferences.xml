@@ -8,4 +8,11 @@
         android:defaultValue="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <CheckBoxPreference
+        android:key="onlyConnectToKnownAccessPoints"
+        android:title="@string/pref_onlyknown"
+        android:summary="@string/pref_onlyknown_summ"
+        android:defaultValue="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </PreferenceScreen>
