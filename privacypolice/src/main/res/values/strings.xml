@@ -5,5 +5,7 @@
     <string name="done">Installation complete!</string>
     <string name="doneexpl">Wi-Fi PrivacyPolice will keep running in the background as long as the app is installed.</string>
     <string name="action_settings">Settings</string>
+    <string name="pref_onlyavailable">Only enable available networks</string>
+    <string name="pref_onlyavailable_summ">Enable networks in your network list only when they become available. This prevents other people from viewing your list of networks.</string>
 
 </resources>
