@@ -8,6 +8,7 @@ public class MainActivity extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
+        // TODO: allow editing of blocked & available networks
 
         /* Now bound in manifest
         // Bind the ScanResultsChecker to an intent filter listening for new Wi-Fi scans

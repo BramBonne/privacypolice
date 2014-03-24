@@ -22,7 +22,7 @@ public class Preferences {
     }
 
     public boolean getOnlyConnectToKnownAccessPoints() {
-        return prefs.getBoolean("onlyConnectToKnownAccessPoints", false);
+        return prefs.getBoolean("onlyConnectToKnownAccessPoints", true);
     }
 
     public Set<String> getAllowedBSSIDs(String SSID) {

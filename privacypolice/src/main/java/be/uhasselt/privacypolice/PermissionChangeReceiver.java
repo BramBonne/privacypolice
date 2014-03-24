@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 
 public class PermissionChangeReceiver extends BroadcastReceiver {
@@ -25,7 +26,9 @@ public class PermissionChangeReceiver extends BroadcastReceiver {
 
         if (enable) {
             prefs.addAllowedBSSID(SSID, BSSID);
-            // TODO: initiate rescan
+            // initiate rescan
+            WifiManager wifiManager = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
+            wifiManager.startScan();
         } else
             prefs.addBlockedBSSID(SSID, BSSID);
     }
