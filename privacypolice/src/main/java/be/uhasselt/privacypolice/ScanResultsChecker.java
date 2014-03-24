@@ -1,6 +1,7 @@
 package be.uhasselt.privacypolice;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +11,6 @@ import android.net.wifi.WifiManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,11 +26,11 @@ public class ScanResultsChecker extends BroadcastReceiver {
         if (System.currentTimeMillis() - lastCheck < 5000)
             return;
         lastCheck = System.currentTimeMillis();
+
         // WiFi scan performed
         wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
         prefs = new Preferences(ctx);
 
-        List<WifiConfiguration> enabledNetworks = null;
         if (!(prefs.getEnableOnlyAvailableNetworks() || prefs.getOnlyConnectToKnownAccessPoints()))
             // Nothing to do
             return;
@@ -51,7 +49,6 @@ public class ScanResultsChecker extends BroadcastReceiver {
     }
 
     private boolean isSafe(WifiConfiguration network, List<ScanResult> scanResults) {
-        HashMap<String, Set> allowedBSSIDs = prefs.getAllowedBSSIDs();
         String plainSSID = network.SSID.substring(1, network.SSID.length() - 1); // Strip "s
 
         for (ScanResult scanResult : scanResults) {
@@ -59,13 +56,16 @@ public class ScanResultsChecker extends BroadcastReceiver {
                 if (!prefs.getOnlyConnectToKnownAccessPoints()) { // Any BSSID is fair game
                     return true;
                 } else { // Check BSSID
-                    Log.d("WiFiPolice", "Will enable " + network.SSID + " if we have already seen its BSSID.");
-                    if (allowedBSSIDs.containsKey(scanResult.SSID) && allowedBSSIDs.get(scanResult.SSID).contains(scanResult.BSSID)) {
+                    Set<String> allowedBSSIDs = prefs.getAllowedBSSIDs(scanResult.SSID);
+                    if (allowedBSSIDs.contains(scanResult.BSSID)) {
                         return true;
                     } else {
                         // Not an allowed BSSID
-                        // Allow the user to add it to the whitelist
-                        askNetworkPermission(scanResult.SSID, scanResult.BSSID);
+                        if (prefs.getBlockedBSSIDs(scanResult.SSID).contains(scanResult.BSSID))
+                            Log.d("WiFiPolice", "Spoofed network detected!");
+                        else
+                            // Allow the user to add it to the whitelist
+                            askNetworkPermission(scanResult.SSID, scanResult.BSSID);
                         // Block temporarily
                         return false;
                     }
@@ -76,10 +76,20 @@ public class ScanResultsChecker extends BroadcastReceiver {
     }
 
     public void askNetworkPermission(String SSID, String BSSID) {
+        Intent addIntent = new Intent(ctx, PermissionChangeReceiver.class);
+        addIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", true);
+        PendingIntent addPendingIntent = PendingIntent.getBroadcast(ctx, 0, addIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        Intent disableIntent = new Intent(ctx, PermissionChangeReceiver.class);
+        disableIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", false);
+        PendingIntent disablePendingIntent = PendingIntent.getBroadcast(ctx, 1, disableIntent, PendingIntent.FLAG_ONE_SHOT);
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ctx)
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("New network encountered")
-                .setContentText("Are you sure the network \"" + SSID + "\" should be available right now?");
+                .setContentTitle('"' + SSID + "\" encountered")
+                .setContentText("Are you sure this network should be available right now?")
+                .addAction(android.R.drawable.ic_input_add, "Yes", addPendingIntent)
+                .addAction(android.R.drawable.ic_delete, "No", disablePendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(0, mBuilder.build());
     }
