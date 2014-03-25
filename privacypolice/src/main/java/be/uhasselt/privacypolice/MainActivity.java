@@ -7,11 +7,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 public class MainActivity extends Activity {
     @Override
@@ -43,7 +40,12 @@ public class MainActivity extends Activity {
 
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.preferences);
-            getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+            try {
+                SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+                prefs.registerOnSharedPreferenceChangeListener(this);
+            } catch (NullPointerException npe) {
+                Log.e("PrivacyPolice", "Null pointer exception when trying to register shared preference change listener");
+            }
         }
 
         @Override
@@ -51,8 +53,12 @@ public class MainActivity extends Activity {
         {
             // Perform a rescan
             Log.v("PrivacyPolice", "Initiating rescan because preference " + key + " changed");
-            WifiManager wifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
-            wifiManager.startScan();
+            try {
+                WifiManager wifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+                wifiManager.startScan();
+            } catch (NullPointerException npe) {
+                Log.e("PrivacyPolice", "Could not get WifiManager from within prefsFragment");
+            }
         }
     }
 }

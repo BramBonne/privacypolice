@@ -7,11 +7,6 @@
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/checkboxes"></FrameLayout>
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/prefsList" />
+        android:id="@+id/checkboxes" />
 
 </LinearLayout>
