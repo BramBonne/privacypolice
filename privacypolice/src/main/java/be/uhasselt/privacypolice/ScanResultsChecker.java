@@ -23,8 +23,8 @@ public class ScanResultsChecker extends BroadcastReceiver {
 
     public void onReceive(Context ctx, Intent i){
         this.ctx = ctx;
-        // Older devices might try to scan constantly. Allow them some rest by checking max. once every 5 seconds
-        if (System.currentTimeMillis() - lastCheck < 5000)
+        // Older devices might try to scan constantly. Allow them some rest by checking max. once every 0.5 seconds
+        if (System.currentTimeMillis() - lastCheck < 500)
             return;
         lastCheck = System.currentTimeMillis();
 
@@ -46,7 +46,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
         List<WifiConfiguration> networkList = wifiManager.getConfiguredNetworks();
         for (WifiConfiguration network : networkList) {
             if (isSafe(network, scanResults)) {
-                Log.d("WiFiPolice", "Enabling " + network.SSID);
+                Log.i("WiFiPolice", "Enabling " + network.SSID);
                 wifiManager.enableNetwork(network.networkId, false); // Do not disable other networks, as multiple networks may be available
             } else
                 wifiManager.disableNetwork(network.networkId); // Make sure all other networks are disabled
@@ -58,16 +58,17 @@ public class ScanResultsChecker extends BroadcastReceiver {
 
         for (ScanResult scanResult : scanResults) {
             if (scanResult.SSID.equals(plainSSID)) {
-                if (!prefs.getOnlyConnectToKnownAccessPoints()) { // Any BSSID is fair game
+                if (!prefs.getOnlyConnectToKnownAccessPoints()) { // Any MAC address is fair game
+                    // Enabling now makes sure that we only want to connect when it is in range
                     return true;
-                } else { // Check BSSID
+                } else { // Check access point's MAC address
                     Set<String> allowedBSSIDs = prefs.getAllowedBSSIDs(scanResult.SSID);
                     if (allowedBSSIDs.contains(scanResult.BSSID)) {
                         return true;
                     } else {
                         // Not an allowed BSSID
                         if (prefs.getBlockedBSSIDs().contains(scanResult.BSSID))
-                            Log.d("WiFiPolice", "Spoofed network detected!");
+                            Log.w("WiFiPolice", "Spoofed network for " + scanResult.SSID + " detected! (BSSID is " + scanResult.BSSID + ")");
                         else
                             // Allow the user to add it to the whitelist
                             askNetworkPermission(scanResult.SSID, scanResult.BSSID);

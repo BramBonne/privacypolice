@@ -39,7 +39,7 @@ public class Preferences {
             // Already in the list
             return;
 
-        Log.d("PrivacyPolice", "Adding BSSID: " + BSSID + " for " + SSID);
+        Log.i("PrivacyPolice", "Adding BSSID: " + BSSID + " for " + SSID);
         currentlyInList.add(BSSID);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet(ALLOWED_BSSID_PREFIX + SSID, currentlyInList);
@@ -52,11 +52,10 @@ public class Preferences {
             // Already in the list
             return;
 
-        Log.d("PrivacyPolice", "Adding blocked BSSID: " + BSSID);
+        Log.i("PrivacyPolice", "Adding blocked BSSID: " + BSSID);
         currentlyInList.add(BSSID);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet("BlockedSSIDs", currentlyInList);
         editor.commit();
     }
-
 }
