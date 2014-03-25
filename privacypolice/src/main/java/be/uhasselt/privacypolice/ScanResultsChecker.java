@@ -19,6 +19,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
     private static Preferences prefs = null;
     private WifiManager wifiManager = null;
     private Context ctx = null;
+    private NotificationManager notificationManager = null;
 
     public void onReceive(Context ctx, Intent i){
         this.ctx = ctx;
@@ -30,10 +31,14 @@ public class ScanResultsChecker extends BroadcastReceiver {
         // WiFi scan performed
         wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
         prefs = new Preferences(ctx);
+        notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (!(prefs.getEnableOnlyAvailableNetworks() || prefs.getOnlyConnectToKnownAccessPoints()))
             // Nothing to do
             return;
+
+        // Disable previous notifications
+        notificationManager.cancelAll();
 
         List<ScanResult> scanResults = wifiManager.getScanResults();
         Log.d("WiFiPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
@@ -90,7 +95,6 @@ public class ScanResultsChecker extends BroadcastReceiver {
                 .setContentText("Are you sure this network should be available right now?")
                 .addAction(android.R.drawable.ic_input_add, "Yes", addPendingIntent)
                 .addAction(android.R.drawable.ic_delete, "No", disablePendingIntent);
-        NotificationManager mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(0, mBuilder.build());
+        notificationManager.notify(0, mBuilder.build());
     }
 }
