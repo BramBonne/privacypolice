@@ -11,10 +11,10 @@ import java.util.Set;
 public class Preferences {
     private SharedPreferences prefs;
     private final String ALLOWED_BSSID_PREFIX = "ABSSID//";
-    private final String BLOCKED_BSSID_PREFIX = "BBSSID//";
 
     public Preferences(Context ctx) {
         this.prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        Log.v("PrivacyPolice", "Current preferences are: " + prefs.getAll().toString());
     }
 
     public boolean getEnableOnlyAvailableNetworks() {
@@ -29,34 +29,34 @@ public class Preferences {
         return prefs.getStringSet(ALLOWED_BSSID_PREFIX + SSID, new HashSet<String>());
     }
 
-    public Set<String> getBlockedBSSIDs(String SSID) {
-        return prefs.getStringSet(BLOCKED_BSSID_PREFIX + SSID, new HashSet<String>());
+    public Set<String> getBlockedBSSIDs() {
+        return prefs.getStringSet("BlockedSSIDs", new HashSet<String>());
     }
 
     public void addAllowedBSSID(String SSID, String BSSID) {
-        addBSSIDToList(SSID, BSSID, true);
-    }
-
-    public void addBlockedBSSID(String SSID, String BSSID) {
-        addBSSIDToList(SSID, BSSID, false);
-    }
-
-    private void addBSSIDToList(String SSID, String BSSID, boolean allowed) {
-        String listPrefix;
-        if (allowed)
-            listPrefix = ALLOWED_BSSID_PREFIX;
-        else
-            listPrefix = BLOCKED_BSSID_PREFIX;
-
-        Set<String> currentlyInList = prefs.getStringSet(listPrefix + SSID, new HashSet<String>());
+        Set<String> currentlyInList = getAllowedBSSIDs(SSID);
         if (currentlyInList.contains(BSSID))
             // Already in the list
             return;
 
-        Log.d("PrivacyPolice", "Adding BSSID: " + BSSID + " for " + SSID + " (" + allowed + ")");
+        Log.d("PrivacyPolice", "Adding BSSID: " + BSSID + " for " + SSID);
         currentlyInList.add(BSSID);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet(ALLOWED_BSSID_PREFIX + SSID, currentlyInList);
         editor.commit();
     }
+
+    public void addBlockedBSSID(String BSSID) {
+        Set<String> currentlyInList = getBlockedBSSIDs();
+        if (currentlyInList.contains(BSSID))
+            // Already in the list
+            return;
+
+        Log.d("PrivacyPolice", "Adding blocked BSSID: " + BSSID);
+        currentlyInList.add(BSSID);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putStringSet("BlockedSSIDs", currentlyInList);
+        editor.commit();
+    }
+
 }

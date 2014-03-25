@@ -66,7 +66,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
                         return true;
                     } else {
                         // Not an allowed BSSID
-                        if (prefs.getBlockedBSSIDs(scanResult.SSID).contains(scanResult.BSSID))
+                        if (prefs.getBlockedBSSIDs().contains(scanResult.BSSID))
                             Log.d("WiFiPolice", "Spoofed network detected!");
                         else
                             // Allow the user to add it to the whitelist
