@@ -14,7 +14,11 @@ public class Preferences {
 
     public Preferences(Context ctx) {
         this.prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-        Log.v("PrivacyPolice", "Current preferences are: " + prefs.getAll().toString());
+        try {
+            Log.v("PrivacyPolice", "Current preferences are: " + prefs.getAll().toString());
+        } catch (NullPointerException npe) {
+            Log.v("PrivacyPolice", "No preferences found!");
+        }
     }
 
     public boolean getEnableOnlyAvailableNetworks() {
@@ -39,10 +43,13 @@ public class Preferences {
             // Already in the list
             return;
 
+        // Create copy of list, because sharedPreferences only checks whether *reference* is the same
+        // In order to add elements, we thus need a new object (otherwise nothing changes)
+        Set<String> newList = new HashSet<String>(currentlyInList);
         Log.i("PrivacyPolice", "Adding BSSID: " + BSSID + " for " + SSID);
-        currentlyInList.add(BSSID);
+        newList.add(BSSID);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putStringSet(ALLOWED_BSSID_PREFIX + SSID, currentlyInList);
+        editor.putStringSet(ALLOWED_BSSID_PREFIX + SSID, newList);
         editor.commit();
     }
 
@@ -53,9 +60,12 @@ public class Preferences {
             return;
 
         Log.i("PrivacyPolice", "Adding blocked BSSID: " + BSSID);
-        currentlyInList.add(BSSID);
+        // Create copy of list, because sharedPreferences only checks whether *reference* is the same
+        // In order to add elements, we thus need a new object (otherwise nothing changes)
+        Set<String> newList = new HashSet<String>(currentlyInList);
+        newList.add(BSSID);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putStringSet("BlockedSSIDs", currentlyInList);
+        editor.putStringSet("BlockedSSIDs", newList);
         editor.commit();
     }
 }

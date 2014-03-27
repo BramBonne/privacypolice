@@ -82,6 +82,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
     }
 
     public void askNetworkPermission(String SSID, String BSSID) {
+        Log.d("WiFiPolice", "Asking permission for " + SSID + " (" + BSSID + ")");
         Intent addIntent = new Intent(ctx, PermissionChangeReceiver.class);
         addIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", true);
         PendingIntent addPendingIntent = PendingIntent.getBroadcast(ctx, 0, addIntent, PendingIntent.FLAG_ONE_SHOT);
