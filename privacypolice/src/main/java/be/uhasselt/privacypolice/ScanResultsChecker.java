@@ -1,5 +1,6 @@
 package be.uhasselt.privacypolice;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -8,7 +9,6 @@ import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.List;
@@ -91,7 +91,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
         disableIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", false);
         PendingIntent disablePendingIntent = PendingIntent.getBroadcast(ctx, 1, disableIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ctx)
+        Notification.Builder mBuilder = new Notification.Builder(ctx)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle('"' + SSID + "\" encountered")
                 .setContentText("Are you sure this network should be available right now?")
