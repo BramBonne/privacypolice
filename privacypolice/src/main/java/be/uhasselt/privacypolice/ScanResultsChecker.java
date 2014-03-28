@@ -85,11 +85,11 @@ public class ScanResultsChecker extends BroadcastReceiver {
         Log.d("WiFiPolice", "Asking permission for " + SSID + " (" + BSSID + ")");
         Intent addIntent = new Intent(ctx, PermissionChangeReceiver.class);
         addIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", true);
-        PendingIntent addPendingIntent = PendingIntent.getBroadcast(ctx, 0, addIntent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent addPendingIntent = PendingIntent.getBroadcast(ctx, 0, addIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent disableIntent = new Intent(ctx, PermissionChangeReceiver.class);
         disableIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", false);
-        PendingIntent disablePendingIntent = PendingIntent.getBroadcast(ctx, 1, disableIntent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent disablePendingIntent = PendingIntent.getBroadcast(ctx, 1, disableIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ctx)
                 .setSmallIcon(R.drawable.ic_launcher)
