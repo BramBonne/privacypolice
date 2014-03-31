@@ -2,18 +2,23 @@ package be.uhasselt.privacypolice;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Preferences {
     private SharedPreferences prefs;
+    private WifiManager wifiManager;
     private final String ALLOWED_BSSID_PREFIX = "ABSSID//";
 
     public Preferences(Context ctx) {
         this.prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        this.wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
         try {
             Log.v("PrivacyPolice", "Current preferences are: " + prefs.getAll().toString());
         } catch (NullPointerException npe) {
@@ -35,6 +40,18 @@ public class Preferences {
 
     public Set<String> getBlockedBSSIDs() {
         return prefs.getStringSet("BlockedSSIDs", new HashSet<String>());
+    }
+
+    /**
+     * Adds all BSSIDs that are currently in range for the specified SSID (prevents nagging)
+     * @param SSID the SSID of the network that needs to be allowed at this location
+     */
+    public void addAllowedBSSIDsForLocation(String SSID) {
+        List<ScanResult> scanResults = wifiManager.getScanResults();
+        for (ScanResult result : scanResults) {
+            if (SSID.equals(result.SSID))
+                addAllowedBSSID(SSID, result.BSSID);
+        }
     }
 
     public void addAllowedBSSID(String SSID, String BSSID) {

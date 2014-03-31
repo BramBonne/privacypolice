@@ -25,7 +25,7 @@ public class PermissionChangeReceiver extends BroadcastReceiver {
         removeNotification();
 
         if (enable) {
-            prefs.addAllowedBSSID(SSID, BSSID);
+            prefs.addAllowedBSSIDsForLocation(SSID);
             // initiate rescan
             WifiManager wifiManager = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
             wifiManager.startScan();
