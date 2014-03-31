@@ -7,8 +7,10 @@
     <string name="pref_onlyknown">Protect against evil access points</string>
     <string name="pref_onlyknown_summ">Only allow connections to access points when they should be available (by asking you the first time you connect to a new access point)</string>
     <string name="ask_permission">Are you sure network "%1$s" should be available right now?</string>
-    <string name="yes">yes</string>
-    <string name="no">no</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="permission_header">\"%1$s\" encountered</string>
+    <string name="request_survey_title">Please fill in our survey</string>
+    <string name="request_survey_text">Filling in our survey helps us perform research, and allows us to provide apps such as this one in the future. Fill in the survey by touching this notification.</string>
 
 </resources>

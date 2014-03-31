@@ -5,8 +5,10 @@
 <string name="pref_onlyknown">Beveilig tegen nagemaakte hotspots</string>
 <string name="pref_onlyknown_summ">Laat enkel verbindingen toe wanneer we zeker zijn dat het netwerk beschikbaar is (er wordt voor elk netwerk één keer gevraagd of het beschikbaar zou moeten zijn op de huidige locatie)</string>
     <string name="ask_permission">Bent u zeker dat \"%1$s\" hier aanwezig is?</string>
-    <string name="yes">ja</string>
-    <string name="no">nee</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
     <string name="permission_header">\"%1$s\" lijkt beschikbaar</string>
+    <string name="request_survey_title">Please fill in our survey</string>
+    <string name="request_survey_text">Filling in our survey helps us perform research, and allows us to provide apps such as this one in the future. Fill in the survey by touching this notification.</string>
 
 </resources>
