@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="pref_onlyavailable">Voorkom netwerk-lekken</string>
+<string name="pref_onlyavailable_summ">Voorkom dat andere mensen je netwerklijst kunnen zien door netwerken enkel te activeren wanneer ze beschikbaar zijn</string>
+<string name="pref_onlyknown">Beveilig tegen nagemaakte hotspots</string>
+<string name="pref_onlyknown_summ">Laat enkel verbindingen toe wanneer we zeker zijn dat het netwerk beschikbaar is (er wordt voor elk netwerk één keer gevraagd of het beschikbaar zou moeten zijn op de huidige locatie)</string>
+
+</resources>

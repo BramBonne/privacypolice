@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Wi-Fi PrivacyPolice</string>
-    <string name="done">Installation complete!</string>
-    <string name="doneexpl">Wi-Fi PrivacyPolice will keep running in the background as long as the app is installed.</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Wi-Fi Privacy Police</string>
     <string name="pref_onlyavailable">Prevent network leakage</string>
     <string name="pref_onlyavailable_summ">Prevent other people from viewing your list of networks by only enabling them when they are in range (will not work with hidden hotspots)</string>
     <string name="pref_onlyknown">Protect against evil access points</string>
