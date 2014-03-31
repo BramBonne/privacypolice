@@ -107,6 +107,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
 
         Notification.Builder mBuilder = new Notification.Builder(ctx)
                 .setSmallIcon(R.drawable.ic_launcher)
+                .setPriority(Notification.PRIORITY_MAX) // To force it to be first in list (and thus, expand)
                 .setContentTitle(headerString)
                 .setContentText(permissionString)
                 .setStyle(new Notification.BigTextStyle().bigText(permissionString))
@@ -118,7 +119,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
     public void askSurvey() {
         String lang = Locale.getDefault().getLanguage();
         Log.d("WiFi Police", "Asking to fill in " + lang + " survey.");
-        String url = "";
+        String url;
         if (lang.equals("nl"))
                 url = "http://www.google.nl";
         else {
@@ -126,7 +127,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
         }
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
-        PendingIntent pi = PendingIntent.getActivity(ctx, 0, i, Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pi = PendingIntent.getActivity(ctx, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Resources res = ctx.getResources();
         Notification.Builder builder = new Notification.Builder(ctx)
