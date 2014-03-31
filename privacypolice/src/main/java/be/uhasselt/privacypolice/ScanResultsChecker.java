@@ -33,10 +33,6 @@ public class ScanResultsChecker extends BroadcastReceiver {
         prefs = new Preferences(ctx);
         notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (!(prefs.getEnableOnlyAvailableNetworks() || prefs.getOnlyConnectToKnownAccessPoints()))
-            // Nothing to do
-            return;
-
         // Disable previous notifications
         notificationManager.cancelAll();
 
@@ -54,6 +50,11 @@ public class ScanResultsChecker extends BroadcastReceiver {
     }
 
     private boolean isSafe(WifiConfiguration network, List<ScanResult> scanResults) {
+        if (!(prefs.getEnableOnlyAvailableNetworks() || prefs.getOnlyConnectToKnownAccessPoints()))
+            return true; // Allow every network
+        if (network.hiddenSSID)
+            return true; // Hidden networks will not show up in scan results
+
         String plainSSID = network.SSID.substring(1, network.SSID.length() - 1); // Strip "s
 
         for (ScanResult scanResult : scanResults) {
