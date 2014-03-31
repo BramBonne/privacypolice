@@ -7,12 +7,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class ScanResultsChecker extends BroadcastReceiver {
@@ -111,5 +113,29 @@ public class ScanResultsChecker extends BroadcastReceiver {
                 .addAction(android.R.drawable.ic_input_add, yes, addPendingIntent)
                 .addAction(android.R.drawable.ic_delete, no, disablePendingIntent);
         notificationManager.notify(0, mBuilder.build());
+    }
+
+    public void askSurvey() {
+        String lang = Locale.getDefault().getLanguage();
+        Log.d("WiFi Police", "Asking to fill in " + lang + " survey.");
+        String url = "";
+        if (lang.equals("nl"))
+                url = "http://www.google.nl";
+        else {
+                url = "http://www.google.com";
+        }
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        PendingIntent pi = PendingIntent.getActivity(ctx, 0, i, Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Resources res = ctx.getResources();
+        Notification.Builder builder = new Notification.Builder(ctx)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle(res.getString(R.string.request_survey_title))
+                .setContentText(res.getString(R.string.request_survey_text))
+                .setStyle(new Notification.BigTextStyle().bigText(res.getString(R.string.request_survey_text)))
+                .setAutoCancel(true)
+                .setContentIntent(pi);
+        notificationManager.notify(97, builder.build());
     }
 }
