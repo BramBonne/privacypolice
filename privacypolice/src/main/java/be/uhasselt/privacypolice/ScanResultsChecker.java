@@ -36,16 +36,20 @@ public class ScanResultsChecker extends BroadcastReceiver {
         // Disable previous notifications
         notificationManager.cancelAll();
 
-        List<ScanResult> scanResults = wifiManager.getScanResults();
-        Log.d("WiFiPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
+        try {
+            List<ScanResult> scanResults = wifiManager.getScanResults();
+            Log.d("WiFiPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
 
-        List<WifiConfiguration> networkList = wifiManager.getConfiguredNetworks();
-        for (WifiConfiguration network : networkList) {
-            if (isSafe(network, scanResults)) {
-                Log.i("WiFiPolice", "Enabling " + network.SSID);
-                wifiManager.enableNetwork(network.networkId, false); // Do not disable other networks, as multiple networks may be available
-            } else
-                wifiManager.disableNetwork(network.networkId); // Make sure all other networks are disabled
+            List<WifiConfiguration> networkList = wifiManager.getConfiguredNetworks();
+            for (WifiConfiguration network : networkList) {
+                if (isSafe(network, scanResults)) {
+                    Log.i("WiFiPolice", "Enabling " + network.SSID);
+                    wifiManager.enableNetwork(network.networkId, false); // Do not disable other networks, as multiple networks may be available
+                } else
+                    wifiManager.disableNetwork(network.networkId); // Make sure all other networks are disabled
+            }
+        } catch (NullPointerException npe) {
+            Log.e("WiFiPolice", "Null pointer exception when handling networks (was Wi-Fi suddenly disabled after a scan?)");
         }
     }
 
