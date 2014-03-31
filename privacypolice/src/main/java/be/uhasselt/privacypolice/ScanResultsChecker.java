@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -96,12 +97,19 @@ public class ScanResultsChecker extends BroadcastReceiver {
         disableIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", false);
         PendingIntent disablePendingIntent = PendingIntent.getBroadcast(ctx, 1, disableIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        Resources res = ctx.getResources();
+        String headerString = String.format(res.getString(R.string.permission_header), SSID);
+        String permissionString = String.format(res.getString(R.string.ask_permission), SSID);
+        String yes = res.getString(R.string.yes);
+        String no = res.getString(R.string.no);
+
         Notification.Builder mBuilder = new Notification.Builder(ctx)
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle('"' + SSID + "\" encountered")
-                .setContentText("Are you sure this network should be available right now?")
-                .addAction(android.R.drawable.ic_input_add, "Yes", addPendingIntent)
-                .addAction(android.R.drawable.ic_delete, "No", disablePendingIntent);
+                .setContentTitle(headerString)
+                .setContentText(permissionString)
+                .setStyle(new Notification.BigTextStyle().bigText(permissionString))
+                .addAction(android.R.drawable.ic_input_add, yes, addPendingIntent)
+                .addAction(android.R.drawable.ic_delete, no, disablePendingIntent);
         notificationManager.notify(0, mBuilder.build());
     }
 }
