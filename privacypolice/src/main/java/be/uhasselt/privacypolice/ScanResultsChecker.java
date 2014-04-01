@@ -93,11 +93,11 @@ public class ScanResultsChecker extends BroadcastReceiver {
         Log.d("WiFiPolice", "Asking permission for " + SSID + " (" + BSSID + ")");
         Intent addIntent = new Intent(ctx, PermissionChangeReceiver.class);
         addIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", true);
-        PendingIntent addPendingIntent = PendingIntent.getBroadcast(ctx, 0, addIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent addPendingIntent = PendingIntent.getBroadcast(ctx, 0, addIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Intent disableIntent = new Intent(ctx, PermissionChangeReceiver.class);
         disableIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", false);
-        PendingIntent disablePendingIntent = PendingIntent.getBroadcast(ctx, 1, disableIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent disablePendingIntent = PendingIntent.getBroadcast(ctx, 1, disableIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Resources res = ctx.getResources();
         String headerString = String.format(res.getString(R.string.permission_header), SSID);
@@ -127,7 +127,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
         }
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
-        PendingIntent pi = PendingIntent.getActivity(ctx, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pi = PendingIntent.getActivity(ctx, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Resources res = ctx.getResources();
         Notification.Builder builder = new Notification.Builder(ctx)
