@@ -111,7 +111,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
         String no = res.getString(R.string.no);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ctx)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setPriority(Notification.PRIORITY_MAX) // To force it to be first in list (and thus, expand)
                 .setContentTitle(headerString)
                 .setContentText(permissionString)
