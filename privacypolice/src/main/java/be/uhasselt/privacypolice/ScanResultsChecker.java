@@ -99,6 +99,10 @@ public class ScanResultsChecker extends BroadcastReceiver {
         disableIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", false);
         PendingIntent disablePendingIntent = PendingIntent.getBroadcast(ctx, 1, disableIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
+        Intent activityIntent = new Intent(ctx, AskPermissionActivity.class);
+        activityIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID);
+        PendingIntent activityPendingIntent = PendingIntent.getActivity(ctx, 2, activityIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
         Resources res = ctx.getResources();
         String headerString = String.format(res.getString(R.string.permission_header), SSID);
         String permissionString = String.format(res.getString(R.string.ask_permission), SSID);
@@ -111,6 +115,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
                 .setContentTitle(headerString)
                 .setContentText(permissionString)
                 .setStyle(new Notification.BigTextStyle().bigText(permissionString))
+                .setContentIntent(activityPendingIntent)
                 .addAction(android.R.drawable.ic_input_add, yes, addPendingIntent)
                 .addAction(android.R.drawable.ic_delete, no, disablePendingIntent);
         notificationManager.notify(0, mBuilder.build());

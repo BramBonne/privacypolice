@@ -12,5 +12,8 @@
     <string name="permission_header">\"%1$s\" encountered</string>
     <string name="request_survey_title">Please fill in our survey</string>
     <string name="request_survey_text">Filling in our survey helps us perform research, and allows us to provide apps such as this one in the future. Fill in the survey by touching this notification.</string>
+    <string name="title_activity_ask_permission">AskPermissionActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
