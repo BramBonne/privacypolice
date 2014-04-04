@@ -12,6 +12,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.util.Log;
+import android.support.v4.app.NotificationCompat;
 
 import java.util.List;
 import java.util.Locale;
@@ -109,12 +110,12 @@ public class ScanResultsChecker extends BroadcastReceiver {
         String yes = res.getString(R.string.yes);
         String no = res.getString(R.string.no);
 
-        Notification.Builder mBuilder = new Notification.Builder(ctx)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ctx)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setPriority(Notification.PRIORITY_MAX) // To force it to be first in list (and thus, expand)
                 .setContentTitle(headerString)
                 .setContentText(permissionString)
-                .setStyle(new Notification.BigTextStyle().bigText(permissionString))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(permissionString))
                 .setContentIntent(activityPendingIntent)
                 .addAction(android.R.drawable.ic_input_add, yes, addPendingIntent)
                 .addAction(android.R.drawable.ic_delete, no, disablePendingIntent);
@@ -135,11 +136,11 @@ public class ScanResultsChecker extends BroadcastReceiver {
         PendingIntent pi = PendingIntent.getActivity(ctx, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Resources res = ctx.getResources();
-        Notification.Builder builder = new Notification.Builder(ctx)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(ctx)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(res.getString(R.string.request_survey_title))
                 .setContentText(res.getString(R.string.request_survey_text))
-                .setStyle(new Notification.BigTextStyle().bigText(res.getString(R.string.request_survey_text)))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(res.getString(R.string.request_survey_text)))
                 .setAutoCancel(true)
                 .setContentIntent(pi);
         notificationManager.notify(97, builder.build());
