@@ -35,7 +35,6 @@
 
         <activity
             android:name="be.uhasselt.privacypolice.AskPermissionActivity"
-            android:label="@string/title_activity_ask_permission"
             android:parentActivityName="be.uhasselt.privacypolice.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

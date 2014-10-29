@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -15,7 +14,6 @@ import android.util.Log;
 import android.support.v4.app.NotificationCompat;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 public class ScanResultsChecker extends BroadcastReceiver {
@@ -121,7 +119,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
                 .addAction(android.R.drawable.ic_delete, no, disablePendingIntent);
         notificationManager.notify(0, mBuilder.build());
     }
-
+/*
     public void askSurvey() {
         String lang = Locale.getDefault().getLanguage();
         Log.d("WiFi Police", "Asking to fill in " + lang + " survey.");
@@ -145,4 +143,5 @@ public class ScanResultsChecker extends BroadcastReceiver {
                 .setContentIntent(pi);
         notificationManager.notify(97, builder.build());
     }
+    */
 }
