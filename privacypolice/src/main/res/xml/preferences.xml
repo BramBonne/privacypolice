@@ -12,7 +12,7 @@
         android:key="onlyConnectToKnownAccessPoints"
         android:title="@string/pref_onlyknown"
         android:summary="@string/pref_onlyknown_summ"
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </PreferenceScreen>
