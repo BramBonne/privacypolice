@@ -4,7 +4,7 @@
     <string name="app_name">Wi-Fi Privacy Police</string>
     <string name="pref_onlyavailable">Prevent network leakage</string>
     <string name="pref_onlyavailable_summ">Prevent other people from viewing your list of networks by only enabling them when they are in range (will not work with hidden hotspots)</string>
-    <string name="pref_onlyknown">Protect against evil access points</string>
+    <string name="pref_onlyknown">Protect against malicious access points</string>
     <string name="pref_onlyknown_summ">Only allow connections to access points when they should be available (by asking you the first time you connect to a new access point)</string>
     <string name="ask_permission">Are you sure network "%1$s" should be available right now?</string>
     <string name="yes">Yes</string>
