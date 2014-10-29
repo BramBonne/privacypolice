@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.util.Log;
 
@@ -21,10 +22,9 @@ public class MainActivity extends Activity {
         FragmentManager mFragmentManager = getFragmentManager();
         FragmentTransaction mFragmentTransaction = mFragmentManager
                 .beginTransaction();
-        PrefsFragment checkboxFragment = new PrefsFragment();
-        mFragmentTransaction.replace(R.id.checkboxes, checkboxFragment);
+        PrefsFragment prefsFragment = new PrefsFragment();
+        mFragmentTransaction.replace(R.id.inflatable_prefs, prefsFragment);
         mFragmentTransaction.commit();
-        // TODO: allow editing of blocked & available networks
 
         /* Now bound in manifest
         // Bind the ScanResultsChecker to an intent filter listening for new Wi-Fi scans
@@ -46,6 +46,19 @@ public class MainActivity extends Activity {
             } catch (NullPointerException npe) {
                 Log.e("PrivacyPolice", "Null pointer exception when trying to register shared preference change listener");
             }
+
+            // Allow clearing of allowed & blocked networks
+            Preference clearHotspotsPreference = findPreference("clearHotspots");
+            clearHotspotsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    // TODO: ask for confirmation
+                    Log.d("PrivacyPolice", "Removing all trusted/untrusted hotspots");
+                    Preferences prefs = new Preferences(getActivity().getApplicationContext());
+                    prefs.clearBSSIDLists();
+                    return true;
+                }
+            });
         }
 
         @Override

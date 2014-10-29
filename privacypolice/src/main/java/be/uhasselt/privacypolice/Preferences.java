@@ -85,4 +85,19 @@ public class Preferences {
         editor.putStringSet("BlockedSSIDs", newList);
         editor.commit();
     }
+
+    public void clearBSSIDLists() {
+        SharedPreferences.Editor editor = prefs.edit();
+
+        // Erase all allowed SSIDs
+        for (String key: prefs.getAll().keySet()) {
+            if (key.startsWith(ALLOWED_BSSID_PREFIX))
+                editor.putStringSet(key, new HashSet<String>());
+        }
+
+        // Erase blocked SSIDs
+        editor.putStringSet("BlockedSSIDs", new HashSet<String>());
+
+        editor.commit();
+    }
 }

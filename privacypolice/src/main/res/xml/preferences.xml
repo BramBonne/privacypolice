@@ -1,18 +1,27 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-    <SwitchPreference
+    <!-- Hopefully the Android devs will fix https://code.google.com/p/android/issues/detail?id=26194
+    soon, so we can use the prettier SwitchPreferences in the future -->
+    <CheckBoxPreference
         android:key="enableOnlyAvailableNetworks"
         android:title="@string/pref_onlyavailable"
         android:summary="@string/pref_onlyavailable_summ"
         android:defaultValue="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <SwitchPreference
+    <CheckBoxPreference
         android:key="onlyConnectToKnownAccessPoints"
         android:title="@string/pref_onlyknown"
         android:summary="@string/pref_onlyknown_summ"
         android:defaultValue="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <Preference
+        android:key="clearHotspots"
+        android:title="@string/clear_hotspots"
+        android:summary="@string/clear_hotspots_summ"
+        android:dependency="onlyConnectToKnownAccessPoints"
+        />
+
 </PreferenceScreen>

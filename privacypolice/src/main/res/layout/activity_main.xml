@@ -7,7 +7,7 @@
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/checkboxes" />
+        android:id="@+id/inflatable_prefs" />
 
     <LinearLayout
         android:orientation="vertical"

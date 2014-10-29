@@ -12,5 +12,7 @@
     <string name="permission_header">\"%1$s\" encountered</string>
     <string name="action_settings">Settings</string>
     <string name="info_string">Wi-Fi Privacy Police will keep protecting you in the background. You can close this window and stop worrying about privacy sensitive information leaking from your device.</string>
+    <string name="clear_hotspots">Clear allowed and blocked hotspots</string>
+    <string name="clear_hotspots_summ">Click here to remove all trusted and untrusted hotspots from your list</string>
 
 </resources>
