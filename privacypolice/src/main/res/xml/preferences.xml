@@ -1,14 +1,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="enableOnlyAvailableNetworks"
         android:title="@string/pref_onlyavailable"
         android:summary="@string/pref_onlyavailable_summ"
         android:defaultValue="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <CheckBoxPreference
+    <SwitchPreference
         android:key="onlyConnectToKnownAccessPoints"
         android:title="@string/pref_onlyknown"
         android:summary="@string/pref_onlyknown_summ"
