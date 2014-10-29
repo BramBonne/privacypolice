@@ -10,4 +10,5 @@
     <string name="no">Nee</string>
     <string name="permission_header">\"%1$s\" lijkt beschikbaar</string>
     <string name="action_settings">Instellingen</string>
+    <string name="info_string">Wi-Fi Privacy Police zal je automatisch beschermen. Je kan dit venster gewoon sluiten.</string>
 </resources>
