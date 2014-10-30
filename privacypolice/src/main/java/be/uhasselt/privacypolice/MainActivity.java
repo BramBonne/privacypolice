@@ -1,9 +1,11 @@
 package be.uhasselt.privacypolice;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -52,10 +54,7 @@ public class MainActivity extends Activity {
             clearHotspotsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    // TODO: ask for confirmation
-                    Log.d("PrivacyPolice", "Removing all trusted/untrusted hotspots");
-                    Preferences prefs = new Preferences(getActivity().getApplicationContext());
-                    prefs.clearBSSIDLists();
+                    clearHotspots();
                     return true;
                 }
             });
@@ -72,6 +71,24 @@ public class MainActivity extends Activity {
             } catch (NullPointerException npe) {
                 Log.e("PrivacyPolice", "Could not get WifiManager from within prefsFragment");
             }
+        }
+
+        public void clearHotspots() {
+            // Ask for confirmation first
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.dialog_clearhotspots);
+            builder.setPositiveButton(R.string.dialog_clearhotspots_yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Preferences prefs = new Preferences(getActivity());
+                    prefs.clearBSSIDLists();
+                }
+            });
+            builder.setNegativeButton(R.string.dialog_clearhotspots_no, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User canceled
+                }
+            });
+            builder.show();
         }
     }
 }

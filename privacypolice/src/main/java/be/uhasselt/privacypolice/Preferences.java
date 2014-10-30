@@ -87,6 +87,7 @@ public class Preferences {
     }
 
     public void clearBSSIDLists() {
+        Log.d("PrivacyPolice", "Removing all trusted/untrusted hotspots");
         SharedPreferences.Editor editor = prefs.edit();
 
         // Erase all allowed SSIDs

@@ -14,5 +14,8 @@
     <string name="info_string">Wi-Fi Privacy Police will keep protecting you in the background. You can close this window and stop worrying about privacy sensitive information leaking from your device.</string>
     <string name="clear_hotspots">Clear allowed and blocked hotspots</string>
     <string name="clear_hotspots_summ">Click here to remove all trusted and untrusted hotspots from your list</string>
+    <string name="dialog_clearhotspots">Are you sure you want to remove all trusted and untrusted hotspots? This will result in Privacy Police asking you for every hotspot whether it should be allowed</string>
+    <string name="dialog_clearhotspots_yes">Clear</string>
+    <string name="dialog_clearhotspots_no">Cancel</string>
 
 </resources>
