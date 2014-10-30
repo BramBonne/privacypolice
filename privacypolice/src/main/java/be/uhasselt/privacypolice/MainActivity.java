@@ -13,6 +13,10 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.util.Log;
 
+/**
+ * Since PrivacyPolice does not need a real MainActivity, this class is used to modify the
+ * preferences, and view the state of the application.
+ */
 public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -20,21 +24,18 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        // Display the fragment as the main content.
+        // Display the preferences fragment as the main content.
         FragmentManager mFragmentManager = getFragmentManager();
         FragmentTransaction mFragmentTransaction = mFragmentManager
                 .beginTransaction();
         PrefsFragment prefsFragment = new PrefsFragment();
         mFragmentTransaction.replace(R.id.inflatable_prefs, prefsFragment);
         mFragmentTransaction.commit();
-
-        /* Now bound in manifest
-        // Bind the ScanResultsChecker to an intent filter listening for new Wi-Fi scans
-        IntentFilter i = new IntentFilter();
-        i.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-        registerReceiver(new ScanResultsChecker(getApplicationContext()), i );*/
     }
 
+    /**
+     * Fragment that is automatically filled with all preferences described in xml/preferences.xml
+     */
     public static class PrefsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class MainActivity extends Activity {
                 Log.e("PrivacyPolice", "Null pointer exception when trying to register shared preference change listener");
             }
 
-            // Allow clearing of allowed & blocked networks
+            // Allow clearing of allowed & blocked APs, via a separate button
             Preference clearHotspotsPreference = findPreference("clearHotspots");
             clearHotspotsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -63,7 +64,7 @@ public class MainActivity extends Activity {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
         {
-            // Perform a rescan
+            // Perform a rescan every time a preference has changed
             Log.v("PrivacyPolice", "Initiating rescan because preference " + key + " changed");
             try {
                 WifiManager wifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
@@ -73,12 +74,17 @@ public class MainActivity extends Activity {
             }
         }
 
+        /**
+         * Ask the user for confirmation that he/she really wants to remove all trusted/untrusted
+         * APs.
+         */
         public void clearHotspots() {
             // Ask for confirmation first
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(R.string.dialog_clearhotspots);
             builder.setPositiveButton(R.string.dialog_clearhotspots_yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
+                    // Actually clear the list
                     Preferences prefs = new Preferences(getActivity());
                     prefs.clearBSSIDLists();
                 }

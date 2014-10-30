@@ -17,6 +17,7 @@
         android:defaultValue="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <!-- This preference is essentially just a button that allows for a nicer lay-out -->
     <Preference
         android:key="clearHotspots"
         android:title="@string/clear_hotspots"

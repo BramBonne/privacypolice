@@ -1,30 +1,35 @@
 package be.uhasselt.privacypolice;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.util.Log;
-import android.support.v4.app.NotificationCompat;
 
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This class contains the actual logic for deciding whether a network connection is allowed.
+ * It receives the broadcast intents for new scan results, in order to decide whether a network is
+ * available. It then checks whether we trust the AP's MAC address, based on the user's configuration.
+ */
+
 public class ScanResultsChecker extends BroadcastReceiver {
+
     private static long lastCheck = 0;
     private static Preferences prefs = null;
     private WifiManager wifiManager = null;
-    private Context ctx = null;
-    private NotificationManager notificationManager = null;
+    private NotificationHandler notificationHandler = null;
 
+    /**
+     * Called for the following intents:
+     *  - SCAN_RESULTS available
+     *  - BOOT_COMPLETED
+     */
     public void onReceive(Context ctx, Intent i){
-        this.ctx = ctx;
         // Older devices might try to scan constantly. Allow them some rest by checking max. once every 0.5 seconds
         if (System.currentTimeMillis() - lastCheck < 500)
             return;
@@ -33,53 +38,76 @@ public class ScanResultsChecker extends BroadcastReceiver {
         // WiFi scan performed
         wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
         prefs = new Preferences(ctx);
-        notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationHandler = new NotificationHandler(ctx);
 
-        // Disable previous notifications
-        notificationManager.cancelAll();
+        // Disable previous notifications, to make sure that we only request permission for the currently
+        // available networks
+        notificationHandler.disableNotifications();
 
         try {
             List<ScanResult> scanResults = wifiManager.getScanResults();
             Log.d("WiFiPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
 
             List<WifiConfiguration> networkList = wifiManager.getConfiguredNetworks();
+            // Check for every network in our network list whether it should be enabled
             for (WifiConfiguration network : networkList) {
                 if (isSafe(network, scanResults)) {
                     Log.i("WiFiPolice", "Enabling " + network.SSID);
-                    wifiManager.enableNetwork(network.networkId, false); // Do not disable other networks, as multiple networks may be available
-                } else
-                    wifiManager.disableNetwork(network.networkId); // Make sure all other networks are disabled
+                    // Do not disable other networks, as multiple networks may be available
+                    wifiManager.enableNetwork(network.networkId, false);
+                } else {
+                    // Make sure all other networks are disabled, by disabling them separately
+                    // (See previous comment to see why we don't disable all of them at the same
+                    // time)
+                    wifiManager.disableNetwork(network.networkId);
+                }
             }
         } catch (NullPointerException npe) {
-            Log.e("WiFiPolice", "Null pointer exception when handling networks (was Wi-Fi suddenly disabled after a scan?)");
+            Log.e("WiFiPolice", "Null pointer exception when handling networks. Wi-Fi was probably suddenly disabled after a scan.");
         }
     }
 
+    /**
+     * Checks whether we should allow connection to a given network, based on the user's preferences
+     * @param network The network that should be checked
+     * @param scanResults The networks that are currently available
+     * @return True if the network may be enabled
+     */
     private boolean isSafe(WifiConfiguration network, List<ScanResult> scanResults) {
+        // If all settings are disabled by the user, then allow every network
+        // This effectively disables all of the app's functionalities
         if (!(prefs.getEnableOnlyAvailableNetworks() || prefs.getOnlyConnectToKnownAccessPoints()))
             return true; // Allow every network
-        if (network.hiddenSSID)
-            return true; // Hidden networks will not show up in scan results
 
-        String plainSSID = network.SSID.substring(1, network.SSID.length() - 1); // Strip "s
+        // Hidden networks will not show up in scan results, keep them enabled at all times
+        if (network.hiddenSSID)
+            return true;
+
+        // Strip double quotes (") from the SSID string
+        String plainSSID = network.SSID.substring(1, network.SSID.length() - 1);
 
         for (ScanResult scanResult : scanResults) {
             if (scanResult.SSID.equals(plainSSID)) {
+                // Check whether the user wants to filter by MAC address
                 if (!prefs.getOnlyConnectToKnownAccessPoints()) { // Any MAC address is fair game
                     // Enabling now makes sure that we only want to connect when it is in range
                     return true;
                 } else { // Check access point's MAC address
+                    // Check if the MAC address is in the list of allowed MAC's for this SSID
                     Set<String> allowedBSSIDs = prefs.getAllowedBSSIDs(scanResult.SSID);
                     if (allowedBSSIDs.contains(scanResult.BSSID)) {
                         return true;
                     } else {
                         // Not an allowed BSSID
-                        if (prefs.getBlockedBSSIDs().contains(scanResult.BSSID))
+                        if (prefs.getBlockedBSSIDs().contains(scanResult.BSSID)) {
+                            // This SSID was explicitly blocked by the user!
                             Log.w("WiFiPolice", "Spoofed network for " + scanResult.SSID + " detected! (BSSID is " + scanResult.BSSID + ")");
-                        else
-                            // Allow the user to add it to the whitelist
-                            askNetworkPermission(scanResult.SSID, scanResult.BSSID);
-                        // Block temporarily
+                        } else {
+                            // We don't know yet whether the user wants to allow this network
+                            // Ask the user what needs to be done
+                            notificationHandler.askNetworkPermission(scanResult.SSID, scanResult.BSSID);
+                        }
+                        // Block temporarily / permanently depending on the previous if-test
                         return false;
                     }
                 }
@@ -87,61 +115,4 @@ public class ScanResultsChecker extends BroadcastReceiver {
         }
         return false; // Network not in range
     }
-
-    public void askNetworkPermission(String SSID, String BSSID) {
-        Log.d("WiFiPolice", "Asking permission for " + SSID + " (" + BSSID + ")");
-        Intent addIntent = new Intent(ctx, PermissionChangeReceiver.class);
-        addIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", true);
-        PendingIntent addPendingIntent = PendingIntent.getBroadcast(ctx, 0, addIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Intent disableIntent = new Intent(ctx, PermissionChangeReceiver.class);
-        disableIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", false);
-        PendingIntent disablePendingIntent = PendingIntent.getBroadcast(ctx, 1, disableIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Intent activityIntent = new Intent(ctx, AskPermissionActivity.class);
-        activityIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID);
-        PendingIntent activityPendingIntent = PendingIntent.getActivity(ctx, 2, activityIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Resources res = ctx.getResources();
-        String headerString = String.format(res.getString(R.string.permission_header), SSID);
-        String permissionString = String.format(res.getString(R.string.ask_permission), SSID);
-        String yes = res.getString(R.string.yes);
-        String no = res.getString(R.string.no);
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ctx)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setPriority(Notification.PRIORITY_MAX) // To force it to be first in list (and thus, expand)
-                .setContentTitle(headerString)
-                .setContentText(permissionString)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(permissionString))
-                .setContentIntent(activityPendingIntent)
-                .addAction(android.R.drawable.ic_input_add, yes, addPendingIntent)
-                .addAction(android.R.drawable.ic_delete, no, disablePendingIntent);
-        notificationManager.notify(0, mBuilder.build());
-    }
-/*
-    public void askSurvey() {
-        String lang = Locale.getDefault().getLanguage();
-        Log.d("WiFi Police", "Asking to fill in " + lang + " survey.");
-        String url;
-        if (lang.equals("nl"))
-                url = "http://www.google.nl";
-        else {
-                url = "http://www.google.com";
-        }
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        PendingIntent pi = PendingIntent.getActivity(ctx, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Resources res = ctx.getResources();
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(ctx)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle(res.getString(R.string.request_survey_title))
-                .setContentText(res.getString(R.string.request_survey_text))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(res.getString(R.string.request_survey_text)))
-                .setAutoCancel(true)
-                .setContentIntent(pi);
-        notificationManager.notify(97, builder.build());
-    }
-    */
 }

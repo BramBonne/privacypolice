@@ -7,6 +7,10 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+/**
+ * Class that handles user actions deciding whether or not an AP should be trusted. Broadcasts are
+ * sent out by NotificationHandler and AskPermissionActivity.
+ */
 public class PermissionChangeReceiver extends BroadcastReceiver {
 
     private Context ctx;
@@ -22,11 +26,13 @@ public class PermissionChangeReceiver extends BroadcastReceiver {
         String BSSID = intent.getStringExtra("BSSID");
         Log.d("PrivacyPolice", "Permission change: " + SSID + " " + BSSID + " " + enable);
 
+        // Remove the notification that was used to make the decision
         removeNotification();
 
         if (enable) {
             prefs.addAllowedBSSIDsForLocation(SSID);
-            // initiate rescan
+            // initiate rescan, to make sure our algorithm enables the network, and to make sure
+            // that Android connects to it
             WifiManager wifiManager = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
             wifiManager.startScan();
         } else

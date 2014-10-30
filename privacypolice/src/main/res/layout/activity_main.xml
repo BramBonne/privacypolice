@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/inflatable_prefs" />
 
+    <!-- Use a linear layout to render the notice at the bottom of the screen -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"

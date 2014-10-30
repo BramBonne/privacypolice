@@ -31,7 +31,6 @@
         <receiver
             android:name="be.uhasselt.privacypolice.PermissionChangeReceiver"
             android:enabled="true" />
-
         <activity
             android:name="be.uhasselt.privacypolice.AskPermissionActivity"
             android:parentActivityName="be.uhasselt.privacypolice.MainActivity" >
