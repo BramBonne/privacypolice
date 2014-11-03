@@ -1,0 +1,38 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.0.2"
+
+    dependencies {
+        // Used for notifications compatibility
+        compile 'com.android.support:support-v4:+'
+    }
+
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 21
+        versionCode 2
+        versionName "1.0"
+    }
+    signingConfigs {
+        release {
+            storeFile file("release.keystore")
+            keyAlias "releasekey"
+            // Create a keystore.properties file in this directory, containing storePassword="password"
+            def props = new Properties()
+            props.load(new FileInputStream(rootProject.file('privacypolice/keystore.properties')))
+            storePassword props['storePassword']
+            keyPassword props['storePassword']
+        }
+    }
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            debuggable false
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
