@@ -63,6 +63,12 @@ public class ScanResultsChecker extends BroadcastReceiver {
                     Log.i("WiFiPolice", "Enabling " + network.SSID);
                     // Do not disable other networks, as multiple networks may be available
                     wifiManager.enableNetwork(network.networkId, false);
+                    // If we aren't already connected to a network, make sure that Android connects.
+                    // This is required for devices running Android Lollipop (5.0) and up, because
+                    // they would otherwise never connect.
+                    if (!wifiManager.reconnect()) {
+                        Log.e("WifiPolice", "Could not reconnect after enabling network");
+                    }
                 } else if (networkSafety == AccessPointSafety.UNTRUSTED) {
                     // Make sure all other networks are disabled, by disabling them separately
                     // (See previous comment to see why we don't disable all of them at the same
