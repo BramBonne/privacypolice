@@ -21,13 +21,19 @@ public class PermissionChangeReceiver extends BroadcastReceiver {
         ctx = context;
         prefs = new Preferences(ctx);
 
+        // Remove the notification that was used to make the decision
+        removeNotification();
+
         boolean enable = intent.getBooleanExtra("enable", true);
         String SSID = intent.getStringExtra("SSID");
         String BSSID = intent.getStringExtra("BSSID");
-        Log.d("PrivacyPolice", "Permission change: " + SSID + " " + BSSID + " " + enable);
 
-        // Remove the notification that was used to make the decision
-        removeNotification();
+        if (SSID == null || BSSID == null) {
+            Log.e("PrivacyPolice", "Could not set permission because SSID or BSSID was null!");
+            return;
+        }
+
+        Log.d("PrivacyPolice", "Permission change: " + SSID + " " + BSSID + " " + enable);
 
         if (enable) {
             prefs.addAllowedBSSIDsForLocation(SSID);
