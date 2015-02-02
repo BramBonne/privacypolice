@@ -62,6 +62,13 @@ public class ScanResultsChecker extends BroadcastReceiver {
             List<WifiConfiguration> networkList = wifiManager.getConfiguredNetworks();
             // Check for every network in our network list whether it should be enabled
             for (WifiConfiguration network : networkList) {
+                if (network.hiddenSSID) {
+                    // Always enable hidden networks, since they *need* to use directed probe requests
+                    // in order to be discovered. Note that using hidden SSID's does not add any
+                    // real security , so it's best to avoid them whenever possible.
+                    // Do not disable other networks, as multiple networks may be available
+                    wifiManager.enableNetwork(network.networkId, false);
+                }
                 AccessPointSafety networkSafety = getNetworkSafety(network, scanResults);
                 if (networkSafety == AccessPointSafety.TRUSTED) {
                     Log.i("WiFiPolice", "Enabling " + network.SSID);
