@@ -39,6 +39,10 @@ public class Preferences {
         return prefs.getBoolean("onlyConnectToKnownAccessPoints", false);
     }
 
+    public boolean getTrackingAllowed() {
+        return prefs.getBoolean("trackingAllowed", false);
+    }
+
     /**
      * Get a list of trusted MAC addresses for a given SSID
        @param SSID the SSID of the network
@@ -81,7 +85,7 @@ public class Preferences {
 
         // Create copy of list, because sharedPreferences only checks whether *reference* is the same
         // In order to add elements, we thus need a new object (otherwise nothing changes)
-        Set<String> newList = new HashSet<String>(currentlyInList);
+        Set<String> newList = new HashSet<>(currentlyInList);
         Log.i("PrivacyPolice", "Adding BSSID: " + BSSID + " for " + SSID);
         newList.add(BSSID);
         SharedPreferences.Editor editor = prefs.edit();
@@ -102,7 +106,7 @@ public class Preferences {
         Log.i("PrivacyPolice", "Adding blocked BSSID: " + BSSID);
         // Create copy of list, because sharedPreferences only checks whether *reference* is the same
         // In order to add elements, we thus need a new object (otherwise nothing changes)
-        Set<String> newList = new HashSet<String>(currentlyInList);
+        Set<String> newList = new HashSet<>(currentlyInList);
         newList.add(BSSID);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet("BlockedSSIDs", newList);

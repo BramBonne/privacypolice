@@ -55,6 +55,10 @@ public class ScanResultsChecker extends BroadcastReceiver {
             List<ScanResult> scanResults = wifiManager.getScanResults();
             Log.d("WiFiPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
 
+            // Collect number of found networks, if allowed by user
+            /*Analytics analytics = new Analytics(ctx);
+            analytics.scanCompleted(scanResults.size());*/
+
             List<WifiConfiguration> networkList = wifiManager.getConfiguredNetworks();
             // Check for every network in our network list whether it should be enabled
             for (WifiConfiguration network : networkList) {

@@ -17,5 +17,7 @@
     <string name="dialog_clearhotspots">Are you sure you want to remove all trusted and untrusted hotspots? This will result in Privacy Police asking you for every hotspot whether it should be allowed</string>
     <string name="dialog_clearhotspots_yes">Clear</string>
     <string name="dialog_clearhotspots_no">Cancel</string>
+    <string name="pref_tracking">Allow anonymous usage statistics</string>
+    <string name="pref_tracking_summ">Enabling this helps further research by periodically sending anonymous usage data, such as whether you are still using the app. We do not collect any personally identifiable information, such as network names.</string>
 
 </resources>
