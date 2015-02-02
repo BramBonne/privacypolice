@@ -1,10 +1,12 @@
 apply plugin: 'android'
-
+apply plugin: 'com.android.application'
 android {
     compileSdkVersion 21
     buildToolsVersion "21.0.2"
 
     dependencies {
+        // Used for analytics (retention rate etc. See Analytics.java for details)
+        compile 'com.google.android.gms:play-services:6.5.87'
         // Used for notifications compatibility
         compile 'com.android.support:support-v4:+'
     }
@@ -28,11 +30,14 @@ android {
     }
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             debuggable false
             signingConfig signingConfigs.release
         }
     }
 }
-
+dependencies {
+    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'com.google.guava:guava:16.0.1'
+}
