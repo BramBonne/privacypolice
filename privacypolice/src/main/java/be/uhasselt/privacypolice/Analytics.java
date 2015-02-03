@@ -5,7 +5,7 @@ package be.uhasselt.privacypolice;
  * anonymized before being used *for research purposes only*
  * This code is currently not used, but might be used for future research.
  */
-
+/*
 import android.content.Context;
 import android.util.Log;
 
@@ -54,3 +54,4 @@ public class Analytics {
         );
     }
 }
+*/

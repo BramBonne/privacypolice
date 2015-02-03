@@ -6,7 +6,7 @@ android {
 
     dependencies {
         // Used for analytics (retention rate etc. See Analytics.java for details)
-        compile 'com.google.android.gms:play-services:6.5.87'
+        //compile 'com.google.android.gms:play-services:6.5.87'
         // Used for notifications compatibility
         compile 'com.android.support:support-v4:+'
     }
@@ -36,8 +36,4 @@ android {
             signingConfig signingConfigs.release
         }
     }
-}
-dependencies {
-    compile 'com.google.android.gms:play-services:6.5.87'
-    compile 'com.google.guava:guava:16.0.1'
 }
