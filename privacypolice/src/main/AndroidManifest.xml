@@ -36,6 +36,8 @@
             android:enabled="true" />
         <activity
             android:name="be.uhasselt.privacypolice.AskPermissionActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog"
+            android:excludeFromRecents="true"
             android:parentActivityName="be.uhasselt.privacypolice.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

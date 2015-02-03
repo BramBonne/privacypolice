@@ -9,7 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /* This activity is used on older devices where actions on notifications are not yet supported.
-   It allows users of those devices to decide whether a network should be trusted.
+ * It allows users of those devices to decide whether a network should be trusted.
+ * The activity presents itself as a dialog box.
  */
 
 public class AskPermissionActivity extends Activity {
@@ -59,5 +60,4 @@ public class AskPermissionActivity extends Activity {
                 }
         );
     }
-
 }

@@ -64,36 +64,8 @@ public class NotificationHandler {
                 .setContentText(permissionString)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(permissionString))
                 .setContentIntent(activityPendingIntent)
-                .addAction(android.R.drawable.ic_input_add, yes, addPendingIntent)
-                .addAction(android.R.drawable.ic_delete, no, disablePendingIntent);
+                .addAction(android.R.drawable.ic_delete, no, disablePendingIntent)
+                .addAction(android.R.drawable.ic_input_add, yes, addPendingIntent);
         notificationManager.notify(0, mBuilder.build());
     }
-
-
-/*
-    // This code will be used in the future, when we want to ask the user about his/her experience
-    public void askSurvey() {
-        String lang = Locale.getDefault().getLanguage();
-        Log.d("WiFi Police", "Asking to fill in " + lang + " survey.");
-        String url;
-        if (lang.equals("nl"))
-                url = "http://www.google.nl";
-        else {
-                url = "http://www.google.com";
-        }
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        PendingIntent pi = PendingIntent.getActivity(ctx, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Resources res = ctx.getResources();
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(ctx)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle(res.getString(R.string.request_survey_title))
-                .setContentText(res.getString(R.string.request_survey_text))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(res.getString(R.string.request_survey_text)))
-                .setAutoCancel(true)
-                .setContentIntent(pi);
-        notificationManager.notify(97, builder.build());
-    }
-    */
 }
