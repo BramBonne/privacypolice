@@ -6,7 +6,7 @@
     <bool name="ga_autoActivityTracking">true</bool>
 
     <!-- The screen names that will appear in reports -->
-    <screenName name="be.uhasselt.privacypolice.MainActivity">
+    <screenName name="be.uhasselt.privacypolice.PreferencesActivity">
         PrivacyPolice MainActivity
     </screenName>
     <screenName name="be.uhasselt.privacypolice.AskPermissionActivity">

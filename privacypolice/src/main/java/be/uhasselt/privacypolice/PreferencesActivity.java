@@ -17,12 +17,12 @@ import android.util.Log;
  * Since PrivacyPolice does not need a real MainActivity, this class is used to modify the
  * preferences, and view the state of the application.
  */
-public class MainActivity extends Activity {
+public class PreferencesActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_preferences);
 
         // Display the preferences fragment as the main content.
         FragmentManager mFragmentManager = getFragmentManager();
@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
             builder.setPositiveButton(R.string.dialog_clearhotspots_yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     // Actually clear the list
-                    Preferences prefs = new Preferences(getActivity());
+                    PreferencesStorage prefs = new PreferencesStorage(getActivity());
                     prefs.clearBSSIDLists();
                 }
             });

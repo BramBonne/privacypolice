@@ -24,7 +24,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
     }
 
     private static long lastCheck = 0;
-    private static Preferences prefs = null;
+    private static PreferencesStorage prefs = null;
     private WifiManager wifiManager = null;
     private NotificationHandler notificationHandler = null;
 
@@ -41,7 +41,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
 
         // WiFi scan performed
         wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
-        prefs = new Preferences(ctx);
+        prefs = new PreferencesStorage(ctx);
         notificationHandler = new NotificationHandler(ctx);
 
         // Keep whether the getNetworkSafety function asked the user for input (to know whether we

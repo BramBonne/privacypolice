@@ -14,12 +14,12 @@ import android.util.Log;
 public class PermissionChangeReceiver extends BroadcastReceiver {
 
     private Context ctx;
-    private Preferences prefs;
+    private PreferencesStorage prefs;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         ctx = context;
-        prefs = new Preferences(ctx);
+        prefs = new PreferencesStorage(ctx);
 
         // Remove the notification that was used to make the decision
         removeNotification();

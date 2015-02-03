@@ -34,7 +34,7 @@ public class Analytics {
             Log.d("PrivacyPolice", "Not using analytics because Google Play services is disabled");
             return false;
         }
-        Preferences prefs = new Preferences(context);
+        PreferencesStorage prefs = new PreferencesStorage(context);
         if (!prefs.getTrackingAllowed()) {
             Log.d("PrivacyPolice", "Not using analytics because the user has indicated he/she does not want to be tracked");
             return false;

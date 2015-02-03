@@ -15,13 +15,13 @@ import java.util.Set;
    untrusted access points
  */
 
-public class Preferences {
+public class PreferencesStorage {
     private SharedPreferences prefs;
     private WifiManager wifiManager;
     // String used to identify MAC addresses of allowed access points
     private final String ALLOWED_BSSID_PREFIX = "ABSSID//";
 
-    public Preferences(Context ctx) {
+    public PreferencesStorage(Context ctx) {
         this.prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         this.wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
         try {
