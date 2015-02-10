@@ -2,7 +2,7 @@ apply plugin: 'android'
 apply plugin: 'com.android.application'
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.0.2"
+    buildToolsVersion "21.1.2"
 
     dependencies {
         // Used for analytics (retention rate etc. See Analytics.java for details)
