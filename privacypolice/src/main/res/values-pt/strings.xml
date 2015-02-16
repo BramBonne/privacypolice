@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Polícia de Privacidade Wi-Fi</string>
+    <string name="pref_onlyavailable">Proteção de Privacidade</string>
+    <string name="pref_onlyavailable_summ">Impedir que outras pessoas vejam sua lista de redes por apenas permitindo-los quando as redes estão na proximidade (não funcionará com hotspots ocultos)</string>
+    <string name="pref_onlyknown">Proteção de Data</string>
+    <string name="pref_onlyknown_summ">Apenas permitir conexões para aceder a pontos de acesso, quando estes tiverem disponíveis (por pedir-lhe a primeira vez que você se lige a um novo ponto de acesso)</string>
+    <string name="ask_permission">Tem a certeza que a rede "%1$s" deve estar disponível agora?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="permission_header">\"%1$s\" encontrada</string>
+    <string name="action_settings">Opções</string>
+    <string name="info_string">Polícia de Privacidade Wi-Fi irá continuar a protegê-lo em segundo plano. Você pode fechar esta janela e parar de se preocupar com o envio de informações sensíveis emitidas pelo seu dispositivo.</string>
+    <string name="clear_hotspots">Limpar hotspots permitidos e bloqueados</string>
+    <string name="clear_hotspots_summ">Clique aqui para remover todos os hotspots autorizados e não autorizados da sua lista/string>
+    <string name="dialog_clearhotspots">Tem certeza de que deseja remover todos os hotspots autorizados e não autorizados? Isto resultará em Polícia de Privacidade pedindo-lhe para que cada hotspot deve ser autorizado</string>
+    <string name="dialog_clearhotspots_yes">Limpar</string>
+    <string name="dialog_clearhotspots_no">Cancelar</string>
+    <string name="pref_tracking">Permitir o uso de estatisticas anónimas</string>
+    <string name="pref_tracking_summ">Activando esta opção irá ajudar ainda mais na investigação desta aplicação, enviando dados anónimos, como por exemplo se ainda está a usar esta aplicação. Não recolhemos qualquer tipo de informação pessoal assim bem como o nome das redes.</string>
+
+</resources>
