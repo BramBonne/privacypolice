@@ -13,7 +13,7 @@
     <string name="action_settings">Opções</string>
     <string name="info_string">Polícia de Privacidade Wi-Fi irá continuar a protegê-lo em segundo plano. Você pode fechar esta janela e parar de se preocupar com o envio de informações sensíveis emitidas pelo seu dispositivo.</string>
     <string name="clear_hotspots">Limpar hotspots permitidos e bloqueados</string>
-    <string name="clear_hotspots_summ">Clique aqui para remover todos os hotspots autorizados e não autorizados da sua lista/string>
+    <string name="clear_hotspots_summ">Clique aqui para remover todos os hotspots autorizados e não autorizados da sua lista</string>
     <string name="dialog_clearhotspots">Tem certeza de que deseja remover todos os hotspots autorizados e não autorizados? Isto resultará em Polícia de Privacidade pedindo-lhe para que cada hotspot deve ser autorizado</string>
     <string name="dialog_clearhotspots_yes">Limpar</string>
     <string name="dialog_clearhotspots_no">Cancelar</string>
