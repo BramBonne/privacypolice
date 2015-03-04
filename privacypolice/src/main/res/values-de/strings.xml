@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Wi-Fi Privacy Police</string>
+    <string name="pref_onlyavailable">Privatsphäre</string>
+    <string name="pref_onlyavailable_summ">Schützen Sie sich davor, dass Fremde die Liste genutzter WLAN-Netwerke sehen, indem Sie einzelne Netzwerke nur aktivieren, wenn sie in Reichweite sind (es können Probleme mit versteckten Netzwerken auftreten).</string>
+    <string name="pref_onlyknown">Datenschutz</string>
+    <string name="pref_onlyknown_summ">Verbinden Sie sich nur mit WLAN-Zugangspunkten, wenn diese verfügbar sein sollten (Sie werden dazu beim ersten Mal vor dem Verbinden gefragt).</string>
+    <string name="ask_permission">Sollte das Netzwerk "%1$s" jetzt verfügbar sein?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="permission_header">\"%1$s\" gefunden</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="info_string">Wi-Fi Privacy Police schützt Sie im Hintergrund. Sie können diese Anwendung schließen und müssen sich nicht weiter um diese Aspekte des Schutzes Ihrer Privatsphäre sorgen.</string>
+    <string name="clear_hotspots">Erlaubte und blockierte Hotspots löschen</string>
+    <string name="clear_hotspots_summ">Hiermit wird die Liste aller vertrauenswürdigen und nicht vertrauenswürdigen Hotspots gelöscht.</string>
+    <string name="dialog_clearhotspots">Sind Sie sicher, dass Sie die Liste aller vertrauenswürdigen und nicht vertrauenswürdigen Hotspots entfernen möchten? Dies wird dazu führen, dass Privacy Police bei jedem Hotspot nachfrägt, ob er verfügbar sein sollte.</string>
+    <string name="dialog_clearhotspots_yes">Löschen</string>
+    <string name="dialog_clearhotspots_no">Abbrechen</string>
+    <string name="pref_tracking">Anonyme Nutzungsstatistiken senden</string>
+    <string name="pref_tracking_summ">Die Aktivierung dieser Funktion hilft bei der Weiterentwicklung dieser App. Wir sammeln keine personenbezogenen Daten, wie z.B. Netzwerknamen.</string>
+
+</resources>
