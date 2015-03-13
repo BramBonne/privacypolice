@@ -25,8 +25,8 @@
     <!-- This preference is essentially just a button that allows for a nicer lay-out -->
     <Preference
         android:key="clearHotspots"
-        android:title="@string/clear_hotspots"
-        android:summary="@string/clear_hotspots_summ"
+        android:title="@string/modify_hotspots"
+        android:summary="@string/modify_hotspots_summ"
         android:dependency="onlyConnectToKnownAccessPoints"
         />
 

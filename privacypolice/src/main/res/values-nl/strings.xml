@@ -11,11 +11,13 @@
     <string name="permission_header">\"%1$s\" lijkt beschikbaar</string>
     <string name="action_settings">Instellingen</string>
     <string name="info_string">Wi-Fi Privacy Police zal je automatisch beschermen. Je kan dit venster gewoon sluiten.</string>
-    <string name="clear_hotspots">Vergeet toegelaten en geblokkeerde hotspots</string>
+    <string name="clear_hotspots">Vergeet alle hotspots</string>
     <string name="clear_hotspots_summ">Klik hier om alle vertrouwde en onvertrouwde hotspots te vergeten</string>
     <string name="dialog_clearhotspots">Ben je zeker dat je alle vertrouwde en onvertrouwde hotspots wil vergeten? Dit zal ervoor zorgen dat Privacy Police je voor elke hotspot opnieuw zal vragen of je ermee wil verbinden</string>
     <string name="dialog_clearhotspots_yes">Verwijder</string>
     <string name="dialog_clearhotspots_no">Annuleer</string>
     <string name="pref_tracking">Laat anonieme gebruikersstatistieken toe</string>
     <string name="pref_tracking_summ">Laat toe om periodiek anonieme gebruikersstatistieken, zoals frequentie van het gebruik van de applicatie, toe om verder onderzoek te helpen. We verzamelen geen persoonlijke informatie, zoals netwerknamen.</string>
+    <string name="modify_hotspots">Modify trusted hotspots</string>
+    <string name="modify_hotspots_summ">Remove hotspots from your list of trusted/blocked hotspots</string>
 </resources>

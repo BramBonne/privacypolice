@@ -28,6 +28,7 @@ import android.util.Log;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /* Class used for storing and retreiving user preferences, including the list of trusted and
@@ -58,9 +59,13 @@ public class PreferencesStorage {
         return prefs.getBoolean("onlyConnectToKnownAccessPoints", false);
     }
 
+    /**
+     * Will be enabled if we decide to implement tracking
+     * @return
+     *
     public boolean getTrackingAllowed() {
         return prefs.getBoolean("trackingAllowed", false);
-    }
+    } */
 
     /**
      * Get a list of trusted MAC addresses for a given SSID
@@ -68,6 +73,21 @@ public class PreferencesStorage {
      */
     public Set<String> getAllowedBSSIDs(String SSID) {
         return prefs.getStringSet(ALLOWED_BSSID_PREFIX + SSID, new HashSet<String>());
+    }
+
+    /**
+     * Get a list of SSIDs for which we trust at least one BSSID
+     */
+    public Set<String> getKnownSSIDs() {
+        Set<String> results = new HashSet<>();
+
+        Map<String, ?> allPrefs = prefs.getAll();
+        for (String key : allPrefs.keySet()) {
+            if (key.startsWith(ALLOWED_BSSID_PREFIX)) {
+                results.add(key.substring(ALLOWED_BSSID_PREFIX.length()));
+            }
+        }
+        return results;
     }
 
     /**

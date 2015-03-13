@@ -20,11 +20,10 @@
 package be.uhasselt.privacypolice;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -70,11 +69,11 @@ public class PreferencesActivity extends Activity {
             }
 
             // Allow clearing of allowed & blocked APs, via a separate button
-            Preference clearHotspotsPreference = findPreference("clearHotspots");
-            clearHotspotsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            Preference modifyHotspotsPreference = findPreference("clearHotspots");
+            modifyHotspotsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    clearHotspots();
+                    modifyHotspots();
                     return true;
                 }
             });
@@ -94,26 +93,11 @@ public class PreferencesActivity extends Activity {
         }
 
         /**
-         * Ask the user for confirmation that he/she really wants to remove all trusted/untrusted
-         * APs.
+         * Launch the SSIDManagerActivity
          */
-        public void clearHotspots() {
-            // Ask for confirmation first
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.dialog_clearhotspots);
-            builder.setPositiveButton(R.string.dialog_clearhotspots_yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // Actually clear the list
-                    PreferencesStorage prefs = new PreferencesStorage(getActivity());
-                    prefs.clearBSSIDLists();
-                }
-            });
-            builder.setNegativeButton(R.string.dialog_clearhotspots_no, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User canceled
-                }
-            });
-            builder.show();
+        public void modifyHotspots() {
+            Intent intent = new Intent(getActivity(), SSIDManagerActivity.class);
+            startActivity(intent);
         }
     }
 }
