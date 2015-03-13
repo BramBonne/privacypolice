@@ -34,12 +34,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+/**
+ * Activity that allows the user to view and modify the stored list of allowed / blocked networks.
+ * This activity contains only a list of the networks, and the option (in the menu) to remove
+ * all stored networks.
+ */
 
 public class SSIDManagerActivity extends ListActivity {
     private ListAdapter adapter;
@@ -55,15 +63,16 @@ public class SSIDManagerActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+        // This menu contains only one item: the removal of all networks altogether
         inflater.inflate(R.menu.ssidmanager, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_removeall:
+                // Ask the user to confirm that he/she wants to remove all networks
                 clearHotspots();
                 return true;
             default:
@@ -94,6 +103,11 @@ public class SSIDManagerActivity extends ListActivity {
         builder.show();
     }
 
+    /**
+     * Adapter that is responsible for populating the list of networks. In this case, the adapter
+     * also contains all logic to sort the networks by availability, and for getting the list from
+     * the preference storage.
+     */
     private class SSIDAdapter extends BaseAdapter {
         private PreferencesStorage prefs = null;
         private WifiManager wifiManager = null;
@@ -106,18 +120,25 @@ public class SSIDManagerActivity extends ListActivity {
             wifiManager = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
             layoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+            // Create the list for the first time
             refresh();
         }
 
+        /**
+         * Repopulate the list by getting the latest information on available networks, and
+         * combining them by networks stored in the preferences.
+         * Only displays networks that are stored in the preferences.
+         */
         public void refresh() {
             Log.v("PrivacyPolice", "Refreshing the SSID adapter");
             // Use an ArrayMap so we can put available networks at the top
             ssidList = new ArrayList<>();
 
+            // Combine the SSIDs that we know of with the SSIDs that are available.
             List<ScanResult> scanResults = wifiManager.getScanResults();
             Set<String> knownSSIDs = prefs.getKnownSSIDs();
 
-            // Add currently available networks that we (at least partially) trust to the list
+            // Add currently available networks that are stored in the preferences to the list
             for (ScanResult scanResult : scanResults) {
                 if (knownSSIDs.contains(scanResult.SSID)) {
                     ssidList.add(new SSID(scanResult.SSID, true));
@@ -143,33 +164,47 @@ public class SSIDManagerActivity extends ListActivity {
 
         @Override
         public long getItemId(int position) {
-            // TODO: Check if it is needed that we implement this function
             return position;
         }
 
+        /**
+         * Get the layout for list item at position 'position'
+         * @param position the position in the list
+         * @param convertView a previously created view (if available)
+         * @param parent the parent view
+         * @return the layout that can be used in the list
+         */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            TextView textView;
-            if (convertView == null) { // We cannot recycle a previous view
-                textView = (TextView) layoutInflater.inflate(R.layout.item_ssidmanager, null);
+            LinearLayout layout;
+            // Recycle a previous view, if available
+            if (convertView == null) {
+                // Not available, create a new view
+                layout = (LinearLayout) layoutInflater.inflate(R.layout.item_ssidmanager, null);
             } else {
-                textView = (TextView) convertView;
+                layout = (LinearLayout) convertView;
             }
 
-            SSID SSIDinfo = ssidList.get(position);
-            textView.setText(SSIDinfo.getName());
-            Log.v("PrivacyPolice", "Adding new SSID to manager list: " + textView.getText());
+            // Fill in the text part of the layout with the SSID
+            SSID SSIDinfo = (SSID) getItem(position);
+            TextView SSIDtext = (TextView) layout.findViewById(R.id.SSIDname);
+            SSIDtext.setText(SSIDinfo.getName());
+            // Make the 'signal strength' icon visible if the network is available
+            ImageView signalStrengthImage = (ImageView) layout.findViewById(R.id.signalStrength);
             if (SSIDinfo.isAvailable()) {
-                // TODO: Make it look enabled
+                signalStrengthImage.setVisibility(View.VISIBLE);
             } else {
-                // TODO: Make it look disabled
-                //textView.setBackgroundColor(R.co);
+                signalStrengthImage.setVisibility(View.INVISIBLE);
             }
 
-            return textView;
+            return layout;
         }
     }
 
+    /**
+     * Helper class used for storing an SSID together with whether the network is currently
+     * available.
+     */
     private class SSID {
         private String name;
         private boolean available;
