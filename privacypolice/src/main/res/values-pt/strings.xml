@@ -19,5 +19,6 @@
     <string name="dialog_clearhotspots_no">Cancelar</string>
     <string name="pref_tracking">Permitir o uso de estatisticas anónimas</string>
     <string name="pref_tracking_summ">Activando esta opção irá ajudar ainda mais na investigação desta aplicação, enviando dados anónimos, como por exemplo se ainda está a usar esta aplicação. Não recolhemos qualquer tipo de informação pessoal assim bem como o nome das redes.</string>
-
+    <string name="modify_hotspots">Modify trusted hotspots</string>
+    <string name="modify_hotspots_summ">Remove hotspots from your list of trusted/blocked hotspots</string>
 </resources>
