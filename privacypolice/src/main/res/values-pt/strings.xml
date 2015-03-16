@@ -23,4 +23,5 @@
     <string name="modify_hotspots_summ">Remove hotspots from your list of trusted/blocked hotspots</string>
     <string name="dialog_removetrustedmac">Are you sure you want to remove access point \"%1$s\"?</string>
     <string name="dialog_remove">Remove</string>
+    <string name="dialog_clearhotspotsformac">Are you sure you want to remove all hotspots for the network \"%1$s\"?</string>
 </resources>

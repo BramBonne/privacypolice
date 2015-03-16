@@ -22,4 +22,5 @@
     <string name="modify_hotspots_summ">Verwijder hotspots uit de lijst van vertrouwde/geblokkeerde hotspots</string>
     <string name="dialog_removetrustedmac">Bent u zeker dat u hotspot \"%1$s\" wil verwijderen?</string>
     <string name="dialog_remove">Verwijder</string>
+    <string name="dialog_clearhotspotsformac">Bent u zeker dat u alle hotspots voor het netwerk \"%1$s\" wil verwijderen?</string>
 </resources>
