@@ -23,6 +23,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -156,6 +157,10 @@ public abstract class NetworkManagerActivity extends ListActivity {
             ImageView signalStrengthImage = (ImageView) layout.findViewById(R.id.signalStrength);
             if (SSIDinfo.isAvailable()) {
                 signalStrengthImage.setVisibility(View.VISIBLE);
+                Log.v("PrivacyPolice", "Adding network " + SSIDinfo.getName() + " with signal strength " + SSIDinfo.getSignalStrength());
+                String resourceName = "ic_wifi_signal_" + SSIDinfo.getSignalStrength() + "_teal";
+                int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
+                signalStrengthImage.setImageResource(resourceId);
             } else {
                 signalStrengthImage.setVisibility(View.INVISIBLE);
             }
@@ -166,15 +171,15 @@ public abstract class NetworkManagerActivity extends ListActivity {
 
     /**
      * Helper class used for storing a network together with whether the network is currently
-     * available.
+     * available, and what its signal strength is.
      */
     protected class NetworkAvailability {
         private String name;
-        private boolean available;
+        private int signalStrength;
 
-        public NetworkAvailability(String name, boolean available) {
+        public NetworkAvailability(String name, int rssi) {
             this.setName(name);
-            this.setAvailable(available);
+            this.setSignalStrength(rssi);
         }
 
         public String getName() {
@@ -186,11 +191,20 @@ public abstract class NetworkManagerActivity extends ListActivity {
         }
 
         public boolean isAvailable() {
-            return available;
+            return signalStrength >= 0;
         }
 
-        public void setAvailable(boolean available) {
-            this.available = available;
+        public int getSignalStrength() {
+            return signalStrength;
+        }
+
+        public void setSignalStrength(int rssi) {
+            if (rssi < -999) {
+                signalStrength = -1;
+            } else {
+                // Map the RSSI value to an integer in the range [0,4]
+                signalStrength = WifiManager.calculateSignalLevel(rssi, 5);
+            }
         }
     }
 }

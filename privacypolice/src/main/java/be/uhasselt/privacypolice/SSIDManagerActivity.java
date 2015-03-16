@@ -83,14 +83,14 @@ public class SSIDManagerActivity extends NetworkManagerActivity {
             // Add currently available networks that are stored in the preferences to the list
             for (ScanResult scanResult : scanResults) {
                 if (knownSSIDs.contains(scanResult.SSID)) {
-                    networkList.add(new NetworkAvailability(scanResult.SSID, true));
+                    networkList.add(new NetworkAvailability(scanResult.SSID, scanResult.level));
                     knownSSIDs.remove(scanResult.SSID);
                 }
             }
 
             // Add all other (non-available) saved SSIDs to the list
             for (String SSID : knownSSIDs) {
-                networkList.add(new NetworkAvailability(SSID, false));
+                networkList.add(new NetworkAvailability(SSID, -9999));
             }
             notifyDataSetChanged();
         }

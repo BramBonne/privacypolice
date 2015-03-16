@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/signalStrength"
-        android:src="@mipmap/ic_networkavailable"
+        android:src="@drawable/ic_wifi_signal_0_teal"
         android:layout_gravity="center_vertical"
         android:maxHeight="@android:dimen/notification_large_icon_height" />
 
@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/SSIDname"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault"
         android:layout_gravity="center_vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:textColor="@android:color/primary_text_light" />
