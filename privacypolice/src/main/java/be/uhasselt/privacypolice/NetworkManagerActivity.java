@@ -32,7 +32,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ import java.util.ArrayList;
  */
 
 public abstract class NetworkManagerActivity extends ListActivity {
-    protected ListAdapter adapter;
+    protected NetworkManagerAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +70,14 @@ public abstract class NetworkManagerActivity extends ListActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * Repopulate the list by getting the latest information on available networks, and
+     * combining them with networks stored in the preferences.
+     */
+    public void refresh() {
+        adapter.refresh();
     }
 
     /**
@@ -103,7 +110,7 @@ public abstract class NetworkManagerActivity extends ListActivity {
 
         /**
          * Repopulate the list by getting the latest information on available networks, and
-         * combining them by networks stored in the preferences.
+         * combining them with networks stored in the preferences.
          * Only displays networks that are stored in the preferences.
          */
         public abstract void refresh();

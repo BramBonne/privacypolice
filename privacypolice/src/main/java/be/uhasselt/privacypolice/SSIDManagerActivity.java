@@ -59,6 +59,7 @@ public class SSIDManagerActivity extends NetworkManagerActivity {
                 // Actually clear the list
                 PreferencesStorage prefs = new PreferencesStorage(SSIDManagerActivity.this);
                 prefs.clearBSSIDLists();
+                SSIDManagerActivity.this.refresh();
             }
         });
         builder.setNegativeButton(R.string.dialog_clearhotspots_no, new DialogInterface.OnClickListener() {
@@ -91,6 +92,7 @@ public class SSIDManagerActivity extends NetworkManagerActivity {
             for (String SSID : knownSSIDs) {
                 networkList.add(new NetworkAvailability(SSID, false));
             }
+            notifyDataSetChanged();
         }
     }
 }

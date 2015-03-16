@@ -77,12 +77,13 @@ public class MACManagerActivity extends NetworkManagerActivity {
     public void confirmClearAll() {
         // Ask for confirmation first
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.dialog_clearhotspotsformac);
+        builder.setMessage(String.format(getResources().getString(R.string.dialog_clearhotspotsformac), SSID));
         builder.setPositiveButton(R.string.dialog_clearhotspots_yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // Actually clear the list
                 PreferencesStorage prefs = new PreferencesStorage(MACManagerActivity.this);
                 prefs.clearBSSIDsForNetwork(MACManagerActivity.this.getSSID());
+                MACManagerActivity.this.refresh();
             }
         });
         builder.setNegativeButton(R.string.dialog_clearhotspots_no, new DialogInterface.OnClickListener() {
@@ -115,6 +116,8 @@ public class MACManagerActivity extends NetworkManagerActivity {
             for (String MAC : trustedMACs) {
                 networkList.add(new NetworkAvailability(MAC, false));
             }
+
+            notifyDataSetChanged();
         }
     }
 }
