@@ -136,7 +136,7 @@ public abstract class NetworkManagerActivity extends ListActivity {
             // Recycle a previous view, if available
             if (convertView == null) {
                 // Not available, create a new view
-                layout = (LinearLayout) layoutInflater.inflate(R.layout.item_ssidmanager, null);
+                layout = (LinearLayout) layoutInflater.inflate(R.layout.item_networkmanager, null);
             } else {
                 layout = (LinearLayout) convertView;
             }
