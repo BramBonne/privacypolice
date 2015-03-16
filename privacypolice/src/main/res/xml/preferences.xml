@@ -24,7 +24,7 @@
         android:layout_height="wrap_content" /-->
     <!-- This preference is essentially just a button that allows for a nicer lay-out -->
     <Preference
-        android:key="clearHotspots"
+        android:key="modifyHotspots"
         android:title="@string/modify_hotspots"
         android:summary="@string/modify_hotspots_summ"
         android:dependency="onlyConnectToKnownAccessPoints"

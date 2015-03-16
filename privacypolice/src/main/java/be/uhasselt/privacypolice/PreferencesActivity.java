@@ -68,8 +68,8 @@ public class PreferencesActivity extends Activity {
                 Log.e("PrivacyPolice", "Null pointer exception when trying to register shared preference change listener");
             }
 
-            // Allow clearing of allowed & blocked APs, via a separate button
-            Preference modifyHotspotsPreference = findPreference("clearHotspots");
+            // Allow modifying of allowed & blocked APs, via a separate button
+            Preference modifyHotspotsPreference = findPreference("modifyHotspots");
             modifyHotspotsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -93,9 +93,10 @@ public class PreferencesActivity extends Activity {
         }
 
         /**
-         * Launch the SSIDManagerActivity
+         * Launch the SSID manager activity
          */
         public void modifyHotspots() {
+            Log.v("PrivacyPolice", "Launching SSID manager");
             Intent intent = new Intent(getActivity(), SSIDManagerActivity.class);
             startActivity(intent);
         }
