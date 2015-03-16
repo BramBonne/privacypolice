@@ -44,6 +44,7 @@ public class MACManagerActivity extends NetworkManagerActivity {
 
         SSID = getIntent().getStringExtra("SSID");
         Log.v("PrivacyPolice", "Creating MAC manager activity for network " + SSID);
+        setTitle(SSID);
 
         adapter = new MACManagerAdapter();
         setListAdapter(adapter);
