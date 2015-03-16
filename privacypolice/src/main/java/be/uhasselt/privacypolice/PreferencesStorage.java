@@ -72,7 +72,8 @@ public class PreferencesStorage {
        @param SSID the SSID of the network
      */
     public Set<String> getAllowedBSSIDs(String SSID) {
-        return prefs.getStringSet(ALLOWED_BSSID_PREFIX + SSID, new HashSet<String>());
+        // Return a copy so the receiver cannot edit the list
+        return new HashSet<>(prefs.getStringSet(ALLOWED_BSSID_PREFIX + SSID, new HashSet<String>()));
     }
 
     /**
@@ -94,7 +95,8 @@ public class PreferencesStorage {
      * Get a list of MAC addresses the user has chosen to block
      */
     public Set<String> getBlockedBSSIDs() {
-        return prefs.getStringSet("BlockedSSIDs", new HashSet<String>());
+        // Return a copy so the receiver cannot edit the list
+        return new HashSet<>(prefs.getStringSet("BlockedSSIDs", new HashSet<String>()));
     }
 
     /**
@@ -127,6 +129,28 @@ public class PreferencesStorage {
         Set<String> newList = new HashSet<>(currentlyInList);
         Log.i("PrivacyPolice", "Adding BSSID: " + BSSID + " for " + SSID);
         newList.add(BSSID);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putStringSet(ALLOWED_BSSID_PREFIX + SSID, newList);
+        editor.commit();
+    }
+
+    /**
+     * Remove a specific MAC address as trusted for the given SSID
+     * @param SSID the SSID of the network
+     * @param BSSID the MAC address of the trusted access point
+     */
+    public void removeAllowedBSSID(String SSID, String BSSID) {
+        Set<String> currentlyInList = getAllowedBSSIDs(SSID);
+        if (!currentlyInList.contains(BSSID))
+            // MAC is not in the list
+            return;
+
+        // Create copy of list, because sharedPreferences only checks whether *reference* is the same
+        // In order to remove elements, we thus need a new object (otherwise nothing changes)
+        Set<String> newList = new HashSet<>(currentlyInList);
+        Log.i("PrivacyPolice", "Removing BSSID: " + BSSID + " for " + SSID);
+        Log.v("PrivacyPolice", "New list for " + SSID + " contains " + newList.toString());
+        newList.remove(BSSID);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet(ALLOWED_BSSID_PREFIX + SSID, newList);
         editor.commit();

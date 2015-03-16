@@ -59,7 +59,26 @@ public class MACManagerActivity extends NetworkManagerActivity {
      */
     @Override
     protected void onListItemClick(ListView listView, View view, int position, long id) {
-        // TODO: IMPLEMENTME
+        NetworkAvailability listItem = (NetworkAvailability) listView.getItemAtPosition(position);
+        final String mac = listItem.getName();
+        Log.v("PrivacyPolice", "Asking for confirmation to remove mac " + mac + " for network " + SSID);
+        // Ask for confirmation first
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(String.format(getResources().getString(R.string.dialog_removetrustedmac), mac));
+        builder.setPositiveButton(R.string.dialog_remove, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // Actually remove the BSSID from the 'trusted' list
+                PreferencesStorage prefs = new PreferencesStorage(MACManagerActivity.this);
+                prefs.removeAllowedBSSID(SSID, mac);
+                MACManagerActivity.this.refresh();
+            }
+        });
+        builder.setNegativeButton(R.string.dialog_clearhotspots_no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User canceled
+            }
+        });
+        builder.show();
     }
 
     /**
