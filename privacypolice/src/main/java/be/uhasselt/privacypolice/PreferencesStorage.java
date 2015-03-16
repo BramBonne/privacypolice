@@ -170,4 +170,17 @@ public class PreferencesStorage {
 
         editor.commit();
     }
+
+    /**
+     * Erase all trusted hotspots for a specific SSID.
+     */
+    public void clearBSSIDsForNetwork(String SSID) {
+        Log.d("PrivacyPolice", "Removing all trusted hotspots for network " + SSID);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        // Erase all trusted network for this SSID, by emptying its MAC address list.
+        editor.putStringSet(ALLOWED_BSSID_PREFIX + SSID, new HashSet<String>());
+
+        editor.commit();
+    }
 }

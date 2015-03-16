@@ -2,9 +2,12 @@ package be.uhasselt.privacypolice;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +21,34 @@ import java.util.Set;
 public class SSIDManagerActivity extends NetworkManagerActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.v("PrivacyPolice", "Creating SSID manager activity");
         super.onCreate(savedInstanceState);
+        Log.v("PrivacyPolice", "Creating SSID manager activity");
 
         adapter = new SSIDManagerAdapter();
         setListAdapter(adapter);
     }
 
+    /**
+     * When an SSID is clicked, redirect to the MAC manager for that network.
+     * @param listView The listview containing the SSID item
+     * @param view The clicked view
+     * @param position The position of the clicked item in the list
+     * @param id The row id of the clicked item
+     */
+    @Override
+    protected void onListItemClick(ListView listView, View view, int position, long id) {
+        Intent intent = new Intent(this, MACManagerActivity.class);
+        // Pass the SSID to the new activity
+        NetworkAvailability listItem = (NetworkAvailability) listView.getItemAtPosition(position);
+        String networkName = listItem.getName();
+        intent.putExtra("SSID", networkName);
+
+        startActivity(intent);
+    }
+
+    /**
+     * Asks the user for confirmation, and then removes all trusted and untrusted access points.
+     */
     @Override
     public void confirmClearAll() {
         // Ask for confirmation first
