@@ -22,6 +22,7 @@ package be.uhasselt.privacypolice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -72,16 +73,20 @@ public class ScanResultsChecker extends BroadcastReceiver {
         wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
         prefs = new PreferencesStorage(ctx);
         notificationHandler = new NotificationHandler(ctx);
+        ctx.registerReceiver(new UserChangeReceiver(), new IntentFilter(Intent.ACTION_USER_BACKGROUND));
+        ctx.registerReceiver(this, new IntentFilter(Intent.ACTION_USER_FOREGROUND));
     }
 
     /**
      * Called for the following intents:
      *  - SCAN_RESULTS available
      *  - BOOT_COMPLETED
+     *  - ACTION_USER_FOREGROUND
      */
     public void onReceive(Context ctx, Intent i){
         // WiFi scan performed
-        init(ctx);
+        if (wifiManager == null) // TODO: make this class a singleton
+            init(ctx);
 
         // Older devices might try to scan constantly. Allow them some rest by checking max. once every 0.5 seconds
         if (System.currentTimeMillis() - lastCheck < 500)
