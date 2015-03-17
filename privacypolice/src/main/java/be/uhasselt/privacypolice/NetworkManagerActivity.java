@@ -181,7 +181,7 @@ public abstract class NetworkManagerActivity extends ListActivity {
                 int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
                 signalStrengthImage.setImageResource(resourceId);
             } else {
-                signalStrengthImage.setVisibility(View.INVISIBLE);
+                signalStrengthImage.setVisibility(View.GONE);
             }
 
             return layout;
