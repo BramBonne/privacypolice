@@ -81,7 +81,7 @@ public class SSIDManagerActivity extends NetworkManagerActivity {
 
             // Combine the SSIDs that we know of with the SSIDs that are available.
             List<ScanResult> scanResults = wifiManager.getScanResults();
-            Set<String> knownSSIDs = prefs.getKnownSSIDs();
+            Set<String> knownSSIDs = prefs.getNonemptySSIDs();
 
             // Add currently available networks that are stored in the preferences to the list
             for (ScanResult scanResult : scanResults) {

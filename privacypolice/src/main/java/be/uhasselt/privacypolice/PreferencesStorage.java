@@ -102,14 +102,14 @@ public class PreferencesStorage {
     /**
      * Get a list of SSIDs for which we remembered at least one BSSID (either allowed or blocked)
      */
-    public Set<String> getKnownSSIDs() {
+    public Set<String> getNonemptySSIDs() {
         Set<String> results = new HashSet<>();
 
         Map<String, ?> allPrefs = prefs.getAll();
         for (String key : allPrefs.keySet()) {
-            if (key.startsWith(ALLOWED_BSSID_PREFIX)) {
+            if (key.startsWith(ALLOWED_BSSID_PREFIX) && prefs.getStringSet(key, new HashSet<String>()).size() > 0) {
                 results.add(key.substring(ALLOWED_BSSID_PREFIX.length()));
-            } else if (key.startsWith(BLOCKED_BSSID_PREFIX)) {
+            } else if (key.startsWith(BLOCKED_BSSID_PREFIX) && prefs.getStringSet(key, new HashSet<String>()).size() > 0) {
                 results.add(key.substring(BLOCKED_BSSID_PREFIX.length()));
             }
         }
