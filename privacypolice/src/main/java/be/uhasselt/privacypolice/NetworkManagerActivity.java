@@ -54,6 +54,15 @@ public abstract class NetworkManagerActivity extends ListActivity {
     }
 
     /**
+     * When bringing this activity to the foreground, refresh the network list.
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        refresh();
+    }
+
+    /**
      * Provide the option on the top right of the screen to remove all remembered networks
      * @param menu The options menu (provided by the Android OS)
      * @return success
@@ -110,7 +119,7 @@ public abstract class NetworkManagerActivity extends ListActivity {
             wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            // Create the list for the first time
+            // Creating the list for the first time
             refresh();
         }
 
