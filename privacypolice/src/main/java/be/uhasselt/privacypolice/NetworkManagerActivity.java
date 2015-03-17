@@ -53,11 +53,16 @@ public abstract class NetworkManagerActivity extends ListActivity {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Provide the option on the top right of the screen to remove all remembered networks
+     * @param menu The options menu (provided by the Android OS)
+     * @return success
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         // This menu contains only one item: the removal of all networks altogether
-        inflater.inflate(R.menu.ssidmanager, menu);
+        inflater.inflate(R.menu.networkmanager, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -170,8 +175,7 @@ public abstract class NetworkManagerActivity extends ListActivity {
     }
 
     /**
-     * Helper class used for storing a network together with whether the network is currently
-     * available, and what its signal strength is.
+     * Helper class used for storing a network together with its current signal strength
      */
     protected class NetworkAvailability {
         private String name;

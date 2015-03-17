@@ -40,6 +40,7 @@ public class PreferencesStorage {
     private WifiManager wifiManager;
     // String used to identify MAC addresses of allowed access points
     private final String ALLOWED_BSSID_PREFIX = "ABSSID//";
+    private final String BLOCKED_BSSID_PREFIX = "BSSID//";
 
     public PreferencesStorage(Context ctx) {
         this.prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -72,12 +73,34 @@ public class PreferencesStorage {
        @param SSID the SSID of the network
      */
     public Set<String> getAllowedBSSIDs(String SSID) {
-        // Return a copy so the receiver cannot edit the list
-        return new HashSet<>(prefs.getStringSet(ALLOWED_BSSID_PREFIX + SSID, new HashSet<String>()));
+        return getBSSIDs(SSID, true);
     }
 
     /**
-     * Get a list of SSIDs for which we trust at least one BSSID
+     * Get a list of blocked MAC addresses for a given SSID
+     @param SSID the SSID of the network
+     */
+    public Set<String> getBlockedBSSIDs(String SSID) {
+        return getBSSIDs(SSID, false);
+    }
+
+    /**
+     * Helper function for getAllowedBSSIDs and getBlockedSSIDs
+     @param SSID the SSID of the network
+     @param allowed when true, return the allowed BSSIDs, when false, return blocked BSSIDs
+     */
+    private Set<String> getBSSIDs(String SSID, boolean allowed) {
+        String prefix;
+        if (allowed)
+            prefix = ALLOWED_BSSID_PREFIX;
+        else
+            prefix = BLOCKED_BSSID_PREFIX;
+        // Return a copy so the receiver cannot edit the list
+        return new HashSet<>(prefs.getStringSet(prefix + SSID, new HashSet<String>()));
+    }
+
+    /**
+     * Get a list of SSIDs for which we remembered at least one BSSID (either allowed or blocked)
      */
     public Set<String> getKnownSSIDs() {
         Set<String> results = new HashSet<>();
@@ -86,17 +109,11 @@ public class PreferencesStorage {
         for (String key : allPrefs.keySet()) {
             if (key.startsWith(ALLOWED_BSSID_PREFIX)) {
                 results.add(key.substring(ALLOWED_BSSID_PREFIX.length()));
+            } else if (key.startsWith(BLOCKED_BSSID_PREFIX)) {
+                results.add(key.substring(BLOCKED_BSSID_PREFIX.length()));
             }
         }
         return results;
-    }
-
-    /**
-     * Get a list of MAC addresses the user has chosen to block
-     */
-    public Set<String> getBlockedBSSIDs() {
-        // Return a copy so the receiver cannot edit the list
-        return new HashSet<>(prefs.getStringSet("BlockedSSIDs", new HashSet<String>()));
     }
 
     /**
@@ -113,25 +130,14 @@ public class PreferencesStorage {
         }
     }
 
-    /**
-     * Add a specific MAC address as trusted for the given SSID
-     * @param SSID the SSID of the network
-     * @param BSSID the MAC address of the trusted access point
-     */
-    private void addAllowedBSSID(String SSID, String BSSID) {
-        Set<String> currentlyInList = getAllowedBSSIDs(SSID);
-        if (currentlyInList.contains(BSSID))
-            // Already in the list
-            return;
+    public void addAllowedBSSID(String SSID, String BSSID) {
+        Log.i("PrivacyPolice", "Adding allowed BSSID " + BSSID + " for network " + SSID);
+        editBSSID(SSID, BSSID, true, true);
+    }
 
-        // Create copy of list, because sharedPreferences only checks whether *reference* is the same
-        // In order to add elements, we thus need a new object (otherwise nothing changes)
-        Set<String> newList = new HashSet<>(currentlyInList);
-        Log.i("PrivacyPolice", "Adding BSSID: " + BSSID + " for " + SSID);
-        newList.add(BSSID);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putStringSet(ALLOWED_BSSID_PREFIX + SSID, newList);
-        editor.commit();
+    public void addBlockedBSSID(String SSID, String BSSID) {
+        Log.i("PrivacyPolice", "Adding blocked BSSID " + BSSID + " for network " + SSID);
+        editBSSID(SSID, BSSID, false, true);
     }
 
     /**
@@ -140,39 +146,41 @@ public class PreferencesStorage {
      * @param BSSID the MAC address of the trusted access point
      */
     public void removeAllowedBSSID(String SSID, String BSSID) {
-        Set<String> currentlyInList = getAllowedBSSIDs(SSID);
-        if (!currentlyInList.contains(BSSID))
-            // MAC is not in the list
-            return;
+        Log.i("PrivacyPolice", "Removing allowed BSSID " + BSSID + " for network " + SSID);
+        editBSSID(SSID, BSSID, true, false);
+    }
 
-        // Create copy of list, because sharedPreferences only checks whether *reference* is the same
-        // In order to remove elements, we thus need a new object (otherwise nothing changes)
-        Set<String> newList = new HashSet<>(currentlyInList);
-        Log.i("PrivacyPolice", "Removing BSSID: " + BSSID + " for " + SSID);
-        Log.v("PrivacyPolice", "New list for " + SSID + " contains " + newList.toString());
-        newList.remove(BSSID);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putStringSet(ALLOWED_BSSID_PREFIX + SSID, newList);
-        editor.commit();
+    public void removeBlockedBSSID(String SSID, String BSSID) {
+        Log.i("PrivacyPolice", "Removing blocked BSSID " + BSSID + " for network " + SSID);
+        editBSSID(SSID, BSSID, false, false);
     }
 
     /**
-     * Add an access point that we want to block connections to.
-     * @param BSSID the MAC address of the untrusted access point
+     * Helper function for addAllowedBSSID, addBlockedSSID, removedAllowedBSSID and removeBlockedBSSID
+     * @param SSID the SSID of the network
+     * @param BSSID the MAC address of the trusted access point
+     * @param allowed when true, add to allowed BSSIDs, when false, add to blocked BSSIDs
+     * @param add when true, add the network to the list, when false, remove the network
      */
-    public void addBlockedBSSID(String BSSID) {
-        Set<String> currentlyInList = getBlockedBSSIDs();
-        if (currentlyInList.contains(BSSID))
-            // Already in the list
-            return;
+    private void editBSSID(String SSID, String BSSID, boolean allowed, boolean add) {
+        // Get the correct prefix (allowed or blocked hotspots)
+        String prefix;
+        if (allowed)
+            prefix = ALLOWED_BSSID_PREFIX;
+        else
+            prefix = BLOCKED_BSSID_PREFIX;
 
-        Log.i("PrivacyPolice", "Adding blocked BSSID: " + BSSID);
+        // Get the current list of known networks
+        Set<String> currentlyInList = prefs.getStringSet(prefix + SSID, new HashSet<String>());
         // Create copy of list, because sharedPreferences only checks whether *reference* is the same
         // In order to add elements, we thus need a new object (otherwise nothing changes)
         Set<String> newList = new HashSet<>(currentlyInList);
-        newList.add(BSSID);
+        if (add)
+            newList.add(BSSID);
+        else
+            newList.remove(BSSID);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putStringSet("BlockedSSIDs", newList);
+        editor.putStringSet(prefix + SSID, newList);
         editor.commit();
     }
 
@@ -185,25 +193,24 @@ public class PreferencesStorage {
 
         // Erase all allowed SSIDs, by emptying their MAC address lists.
         for (String key: prefs.getAll().keySet()) {
-            if (key.startsWith(ALLOWED_BSSID_PREFIX))
+            if (key.startsWith(ALLOWED_BSSID_PREFIX) || key.startsWith(BLOCKED_BSSID_PREFIX))
                 editor.putStringSet(key, new HashSet<String>());
         }
-
-        // Erase blocked SSIDs
-        editor.putStringSet("BlockedSSIDs", new HashSet<String>());
 
         editor.commit();
     }
 
     /**
-     * Erase all trusted hotspots for a specific SSID.
+     * Erase all known hotspots for a specific SSID.
      */
     public void clearBSSIDsForNetwork(String SSID) {
-        Log.d("PrivacyPolice", "Removing all trusted hotspots for network " + SSID);
+        Log.d("PrivacyPolice", "Removing all known hotspots for network " + SSID);
         SharedPreferences.Editor editor = prefs.edit();
 
         // Erase all trusted network for this SSID, by emptying its MAC address list.
         editor.putStringSet(ALLOWED_BSSID_PREFIX + SSID, new HashSet<String>());
+        // Erase all blocked network for this SSID
+        editor.putStringSet(BLOCKED_BSSID_PREFIX + SSID, new HashSet<String>());
 
         editor.commit();
     }

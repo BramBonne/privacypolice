@@ -148,7 +148,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
                         return AccessPointSafety.TRUSTED;
                     } else {
                         // Not an allowed BSSID
-                        if (prefs.getBlockedBSSIDs().contains(scanResult.BSSID)) {
+                        if (prefs.getBlockedBSSIDs(scanResult.SSID).contains(scanResult.BSSID)) {
                             // This SSID was explicitly blocked by the user!
                             Log.w("WiFiPolice", "Spoofed network for " + scanResult.SSID + " detected! (BSSID is " + scanResult.BSSID + ")");
                             return AccessPointSafety.UNTRUSTED;

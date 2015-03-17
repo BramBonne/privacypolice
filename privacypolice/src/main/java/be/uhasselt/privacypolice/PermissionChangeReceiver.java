@@ -61,7 +61,7 @@ public class PermissionChangeReceiver extends BroadcastReceiver {
             WifiManager wifiManager = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
             wifiManager.startScan();
         } else
-            prefs.addBlockedBSSID(BSSID);
+            prefs.addBlockedBSSID(SSID, BSSID);
     }
 
     private void removeNotification() {
