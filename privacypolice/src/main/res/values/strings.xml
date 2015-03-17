@@ -5,7 +5,7 @@
     <string name="pref_onlyavailable">Privacy protection</string>
     <string name="pref_onlyavailable_summ">Prevent other people from viewing your list of networks by only enabling them when they are in range (will not work with hidden hotspots)</string>
     <string name="pref_onlyknown">Data protection</string>
-    <string name="pref_onlyknown_summ">Only allow connections to access points when they should be available (by asking you the first time you connect to a new access point)</string>
+    <string name="pref_onlyknown_summ">Only allow connections to hotspots when they should be available (by asking you the first time you connect to a new hotspot)</string>
     <string name="ask_permission">Are you sure network "%1$s" should be available right now?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -22,7 +22,7 @@
     <string name="pref_tracking_summ">Enabling this helps further research by periodically sending anonymous usage data, such as whether you are still using the app. We do not collect any personally identifiable information, such as network names.</string>
     <string name="modify_hotspots">Modify trusted hotspots</string>
     <string name="modify_hotspots_summ">Remove hotspots from your list of trusted/blocked hotspots</string>
-    <string name="dialog_removetrustedmac">Are you sure you want to remove access point \"%1$s\"?</string>
+    <string name="dialog_removetrustedmac">Are you sure you want to remove hotspot \"%1$s\"?</string>
     <string name="dialog_remove">Remove</string>
 
 </resources>
