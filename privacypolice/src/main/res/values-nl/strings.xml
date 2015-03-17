@@ -18,8 +18,8 @@
     <string name="dialog_clearhotspots_no">Annuleer</string>
     <string name="pref_tracking">Laat anonieme gebruikersstatistieken toe</string>
     <string name="pref_tracking_summ">Laat toe om periodiek anonieme gebruikersstatistieken, zoals frequentie van het gebruik van de applicatie, toe om verder onderzoek te helpen. We verzamelen geen persoonlijke informatie, zoals netwerknamen.</string>
-    <string name="modify_hotspots">Pas vertrouwde hotspots aan</string>
-    <string name="modify_hotspots_summ">Verwijder hotspots uit de lijst van vertrouwde/geblokkeerde hotspots</string>
+    <string name="modify_hotspots">Lijst van hotspots</string>
+    <string name="modify_hotspots_summ">Verwijder hotspots uit de lijst van vertrouwde en geblokkeerde hotspots (geavanceerd)</string>
     <string name="dialog_removetrustedmac">Bent u zeker dat u hotspot \"%1$s\" wil verwijderen?</string>
     <string name="dialog_remove">Verwijder</string>
     <string name="dialog_clearhotspotsformac">Bent u zeker dat u alle hotspots voor het netwerk \"%1$s\" wil verwijderen?</string>
