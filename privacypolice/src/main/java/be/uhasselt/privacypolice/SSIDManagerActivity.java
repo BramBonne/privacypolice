@@ -19,11 +19,14 @@ import java.util.Set;
  * all stored SSIDs.
  **/
 public class SSIDManagerActivity extends NetworkManagerActivity {
+    private ScanResultsChecker scanResultsChecker;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v("PrivacyPolice", "Creating SSID manager activity");
 
+        scanResultsChecker = new ScanResultsChecker(this);
         adapter = new SSIDManagerAdapter();
         setListAdapter(adapter);
     }
@@ -83,14 +86,16 @@ public class SSIDManagerActivity extends NetworkManagerActivity {
             // Add currently available networks that are stored in the preferences to the list
             for (ScanResult scanResult : scanResults) {
                 if (knownSSIDs.contains(scanResult.SSID)) {
-                    networkList.add(new NetworkAvailability(scanResult.SSID, scanResult.level));
+                    ScanResultsChecker.AccessPointSafety networkSafety = scanResultsChecker.getNetworkSafety(scanResult.SSID, scanResults);
+                    networkList.add(new NetworkAvailability(scanResult.SSID, scanResult.level, networkSafety));
                     knownSSIDs.remove(scanResult.SSID);
                 }
             }
 
             // Add all other (non-available) saved SSIDs to the list
             for (String SSID : knownSSIDs) {
-                networkList.add(new NetworkAvailability(SSID, -9999));
+                ScanResultsChecker.AccessPointSafety networkSafety = scanResultsChecker.getNetworkSafety(SSID, scanResults);
+                networkList.add(new NetworkAvailability(SSID, -9999, networkSafety));
             }
             notifyDataSetChanged();
         }

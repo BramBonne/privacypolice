@@ -127,14 +127,16 @@ public class MACManagerActivity extends NetworkManagerActivity {
             // Add currently available access points that are stored in the preferences to the list
             for (ScanResult scanResult : scanResults) {
                 if (trustedMACs.contains(scanResult.BSSID)) {
-                    networkList.add(new NetworkAvailability(scanResult.BSSID, scanResult.level));
+                    // TODO: last parameter
+                    networkList.add(new NetworkAvailability(scanResult.BSSID, scanResult.level, ScanResultsChecker.AccessPointSafety.TRUSTED));
                     trustedMACs.remove(scanResult.BSSID);
                 }
             }
 
             // Add all other (non-available) saved SSIDs to the list
             for (String MAC : trustedMACs) {
-                networkList.add(new NetworkAvailability(MAC, -99999));
+                // TODO
+                networkList.add(new NetworkAvailability(MAC, -99999, ScanResultsChecker.AccessPointSafety.TRUSTED));
             }
 
             notifyDataSetChanged();

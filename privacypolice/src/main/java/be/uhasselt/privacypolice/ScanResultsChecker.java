@@ -38,14 +38,41 @@ import java.util.Set;
 
 public class ScanResultsChecker extends BroadcastReceiver {
 
-    private enum AccessPointSafety {
+    public enum AccessPointSafety {
         TRUSTED, UNTRUSTED, UNKNOWN
     }
 
     private static long lastCheck = 0;
     private static PreferencesStorage prefs = null;
-    private WifiManager wifiManager = null;
-    private NotificationHandler notificationHandler = null;
+    private static WifiManager wifiManager = null;
+    private static NotificationHandler notificationHandler = null;
+
+    /**
+     * Default constructor allowing to use this class as a receiver.
+     * DO NOT USE THIS CONSTRUCTOR WHEN INSTANTIATING THIS CLASS MANUALLY. Pass the context as the
+     * single parameter to this constructor instead.
+     */
+    public ScanResultsChecker() {
+        super();
+    }
+
+    /**
+     * Non-default constructor which allows other classes to instantiate this class with a given context
+     * @param ctx Context of the caller
+     */
+    public ScanResultsChecker(Context ctx) {
+        init(ctx);
+    }
+
+    /**
+     * Initialize static variables, depending on the current context
+     * @param ctx The current context
+     */
+    public void init(Context ctx) {
+        wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
+        prefs = new PreferencesStorage(ctx);
+        notificationHandler = new NotificationHandler(ctx);
+    }
 
     /**
      * Called for the following intents:
@@ -53,15 +80,13 @@ public class ScanResultsChecker extends BroadcastReceiver {
      *  - BOOT_COMPLETED
      */
     public void onReceive(Context ctx, Intent i){
+        // WiFi scan performed
+        init(ctx);
+
         // Older devices might try to scan constantly. Allow them some rest by checking max. once every 0.5 seconds
         if (System.currentTimeMillis() - lastCheck < 500)
             return;
         lastCheck = System.currentTimeMillis();
-
-        // WiFi scan performed
-        wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
-        prefs = new PreferencesStorage(ctx);
-        notificationHandler = new NotificationHandler(ctx);
 
         // Keep whether the getNetworkSafety function asked the user for input (to know whether we
         // have to disable any notifications afterwards, and to keep the UX as smooth as possible).
@@ -120,7 +145,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
      * @return TRUSTED or UNTRUSTED, based on the user's preferences, or UNKNOWN if the user didn't
      *          specify anything yet
      */
-    private AccessPointSafety getNetworkSafety(WifiConfiguration network, List<ScanResult> scanResults) {
+    public AccessPointSafety getNetworkSafety(WifiConfiguration network, List<ScanResult> scanResults) {
         // If all settings are disabled by the user, then allow every network
         // This effectively disables all of the app's functionalities
         if (!(prefs.getEnableOnlyAvailableNetworks() || prefs.getOnlyConnectToKnownAccessPoints()))
@@ -135,8 +160,20 @@ public class ScanResultsChecker extends BroadcastReceiver {
         // Strip double quotes (") from the SSID string
         String plainSSID = network.SSID.substring(1, network.SSID.length() - 1);
 
+        return getNetworkSafety(plainSSID, scanResults);
+    }
+
+    /**
+     * Checks whether we should allow connection to a given SSID, based on the user's preferences
+     * It will also ask the user if it is unknown whether the network should be trusted.
+     * @param SSID The SSID of the network that should be checked
+     * @param scanResults The networks that are currently available
+     * @return TRUSTED or UNTRUSTED, based on the user's preferences, or UNKNOWN if the user didn't
+     *          specify anything yet
+     */
+    public AccessPointSafety getNetworkSafety(String SSID, List<ScanResult> scanResults) {
         for (ScanResult scanResult : scanResults) {
-            if (scanResult.SSID.equals(plainSSID)) {
+            if (scanResult.SSID.equals(SSID)) {
                 // Check whether the user wants to filter by MAC address
                 if (!prefs.getOnlyConnectToKnownAccessPoints()) { // Any MAC address is fair game
                     // Enabling now makes sure that we only want to connect when it is in range

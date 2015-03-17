@@ -161,9 +161,14 @@ public abstract class NetworkManagerActivity extends ListActivity {
             // Make the 'signal strength' icon visible if the network is available
             ImageView signalStrengthImage = (ImageView) layout.findViewById(R.id.signalStrength);
             if (SSIDinfo.isAvailable()) {
+                // Show signal strength if the network is available
                 signalStrengthImage.setVisibility(View.VISIBLE);
                 Log.v("PrivacyPolice", "Adding network " + SSIDinfo.getName() + " with signal strength " + SSIDinfo.getSignalStrength());
-                String resourceName = "ic_wifi_signal_" + SSIDinfo.getSignalStrength() + "_teal";
+                // Color signal strength teal (if trusted) or pink (if blocked)
+                String color = "teal";
+                if (SSIDinfo.getAccessPointSafety() == ScanResultsChecker.AccessPointSafety.UNTRUSTED)
+                    color = "pink";
+                String resourceName = "ic_wifi_signal_" + SSIDinfo.getSignalStrength() + "_" + color;
                 int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
                 signalStrengthImage.setImageResource(resourceId);
             } else {
@@ -175,15 +180,18 @@ public abstract class NetworkManagerActivity extends ListActivity {
     }
 
     /**
-     * Helper class used for storing a network together with its current signal strength
+     * Helper class used for storing a network together with its safety (according to PrivacyPolice)
+     * and its current signal strength
      */
     protected class NetworkAvailability {
         private String name;
         private int signalStrength;
+        private ScanResultsChecker.AccessPointSafety accessPointSafety;
 
-        public NetworkAvailability(String name, int rssi) {
+        public NetworkAvailability(String name, int rssi, ScanResultsChecker.AccessPointSafety accessPointSafety) {
             this.setName(name);
             this.setSignalStrength(rssi);
+            this.setAccessPointSafety(accessPointSafety);
         }
 
         public String getName() {
@@ -209,6 +217,14 @@ public abstract class NetworkManagerActivity extends ListActivity {
                 // Map the RSSI value to an integer in the range [0,4]
                 signalStrength = WifiManager.calculateSignalLevel(rssi, 5);
             }
+        }
+
+        public ScanResultsChecker.AccessPointSafety getAccessPointSafety() {
+            return accessPointSafety;
+        }
+
+        public void setAccessPointSafety(ScanResultsChecker.AccessPointSafety accessPointSafety) {
+            this.accessPointSafety = accessPointSafety;
         }
     }
 }
