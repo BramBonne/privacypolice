@@ -59,7 +59,7 @@ public class MACManagerActivity extends NetworkManagerActivity {
      */
     @Override
     protected void onListItemClick(ListView listView, View view, int position, long id) {
-        NetworkAvailability listItem = (NetworkAvailability) listView.getItemAtPosition(position);
+        final NetworkAvailability listItem = (NetworkAvailability) listView.getItemAtPosition(position);
         final String mac = listItem.getName();
         Log.v("PrivacyPolice", "Asking for confirmation to remove mac " + mac + " for network " + SSID);
         // Ask for confirmation first
@@ -69,7 +69,10 @@ public class MACManagerActivity extends NetworkManagerActivity {
             public void onClick(DialogInterface dialog, int id) {
                 // Actually remove the BSSID from the 'trusted' list
                 PreferencesStorage prefs = new PreferencesStorage(MACManagerActivity.this);
-                prefs.removeAllowedBSSID(SSID, mac);
+                if (listItem.getAccessPointSafety() == ScanResultsChecker.AccessPointSafety.TRUSTED)
+                    prefs.removeAllowedBSSID(SSID, mac);
+                else
+                    prefs.removeBlockedBSSID(SSID, mac);
                 MACManagerActivity.this.refresh();
             }
         });
@@ -122,21 +125,30 @@ public class MACManagerActivity extends NetworkManagerActivity {
 
             // Combine the access points that we know of with the access points that are available.
             List<ScanResult> scanResults = wifiManager.getScanResults();
-            Set<String> trustedMACs = prefs.getAllowedBSSIDs(getSSID());
 
-            // Add currently available access points that are stored in the preferences to the list
+            Set<String> trustedMACs = prefs.getAllowedBSSIDs(getSSID());
+            // Add currently available access points that we trust to the list
             for (ScanResult scanResult : scanResults) {
                 if (trustedMACs.contains(scanResult.BSSID)) {
-                    // TODO: last parameter
                     networkList.add(new NetworkAvailability(scanResult.BSSID, scanResult.level, ScanResultsChecker.AccessPointSafety.TRUSTED));
                     trustedMACs.remove(scanResult.BSSID);
+                }
+            }
+            Set<String> blockedMACs = prefs.getBlockedBSSIDs(getSSID());
+            // Add currently available access points that we block to the list
+            for (ScanResult scanResult : scanResults) {
+                if (blockedMACs.contains(scanResult.BSSID)) {
+                    networkList.add(new NetworkAvailability(scanResult.BSSID, scanResult.level, ScanResultsChecker.AccessPointSafety.UNTRUSTED));
+                    blockedMACs.remove(scanResult.BSSID);
                 }
             }
 
             // Add all other (non-available) saved SSIDs to the list
             for (String MAC : trustedMACs) {
-                // TODO
                 networkList.add(new NetworkAvailability(MAC, -99999, ScanResultsChecker.AccessPointSafety.TRUSTED));
+            }
+            for (String MAC : blockedMACs) {
+                networkList.add(new NetworkAvailability(MAC, -99999, ScanResultsChecker.AccessPointSafety.UNTRUSTED));
             }
 
             notifyDataSetChanged();
