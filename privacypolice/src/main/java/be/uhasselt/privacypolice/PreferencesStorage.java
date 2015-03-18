@@ -40,7 +40,7 @@ public class PreferencesStorage {
     private WifiManager wifiManager;
     // String used to identify MAC addresses of allowed access points
     private final String ALLOWED_BSSID_PREFIX = "ABSSID//";
-    private final String BLOCKED_BSSID_PREFIX = "BSSID//";
+    private final String BLOCKED_BSSID_PREFIX = "BBSSID//";
 
     public PreferencesStorage(Context ctx) {
         this.prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
