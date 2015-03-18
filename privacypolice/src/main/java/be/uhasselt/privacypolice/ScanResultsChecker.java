@@ -22,7 +22,6 @@ package be.uhasselt.privacypolice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -43,6 +42,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
         TRUSTED, UNTRUSTED, UNKNOWN
     }
 
+    // The last time we checked all networks.
     private static long lastCheck = 0;
     private static PreferencesStorage prefs = null;
     private static WifiManager wifiManager = null;
@@ -73,26 +73,38 @@ public class ScanResultsChecker extends BroadcastReceiver {
         wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
         prefs = new PreferencesStorage(ctx);
         notificationHandler = new NotificationHandler(ctx);
-        ctx.registerReceiver(new UserChangeReceiver(), new IntentFilter(Intent.ACTION_USER_BACKGROUND));
-        ctx.registerReceiver(this, new IntentFilter(Intent.ACTION_USER_FOREGROUND));
     }
 
     /**
      * Called for the following intents:
      *  - SCAN_RESULTS available
      *  - BOOT_COMPLETED
-     *  - ACTION_USER_FOREGROUND
      */
-    public void onReceive(Context ctx, Intent i){
-        // WiFi scan performed
+    public void onReceive(Context ctx, Intent intent) {
         if (wifiManager == null) // TODO: make this class a singleton
             init(ctx);
 
+        // WiFi scan performed
         // Older devices might try to scan constantly. Allow them some rest by checking max. once every 0.5 seconds
         if (System.currentTimeMillis() - lastCheck < 500)
             return;
         lastCheck = System.currentTimeMillis();
 
+        try {
+            List<ScanResult> scanResults = wifiManager.getScanResults();
+            Log.d("PrivacyPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
+            checkResults(scanResults);
+        } catch (NullPointerException npe) {
+            Log.e("PrivacyPolice", "Null pointer exception when handling networks. Wi-Fi was probably suddenly disabled after a scan. Exception info: " + npe.getMessage());
+        }
+    }
+
+    /**
+     * Check which networks should be enabled, and enable them accordingly. Ask for user input when
+     * a network's safety level can not be determined
+     * @param scanResults The results of the last network scan
+     */
+    private void checkResults(List<ScanResult> scanResults) {
         // Keep whether the getNetworkSafety function asked the user for input (to know whether we
         // have to disable any notifications afterwards, and to keep the UX as smooth as possible).
         // Alternatively, we would disable previous notifications here, but that would lead to the
@@ -100,40 +112,33 @@ public class ScanResultsChecker extends BroadcastReceiver {
         // updating).
         boolean notificationShown = false;
 
-        try {
-            List<ScanResult> scanResults = wifiManager.getScanResults();
-            Log.d("PrivacyPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
+        // Collect number of found networks, if allowed by user
+        /*Analytics analytics = new Analytics(ctx);
+        analytics.scanCompleted(scanResults.size());*/
 
-            // Collect number of found networks, if allowed by user
-            /*Analytics analytics = new Analytics(ctx);
-            analytics.scanCompleted(scanResults.size());*/
-
-            List<WifiConfiguration> networkList = wifiManager.getConfiguredNetworks();
-            // Check for every network in our network list whether it should be enabled
-            for (WifiConfiguration network : networkList) {
-                AccessPointSafety networkSafety = getNetworkSafety(network, scanResults);
-                if (networkSafety == AccessPointSafety.TRUSTED) {
-                    Log.i("PrivacyPolice", "Enabling " + network.SSID);
-                    // Do not disable other networks, as multiple networks may be available
-                    wifiManager.enableNetwork(network.networkId, false);
-                    // If we aren't already connected to a network, make sure that Android connects.
-                    // This is required for devices running Android Lollipop (5.0) and up, because
-                    // they would otherwise never connect.
-                    if (!wifiManager.reconnect()) {
-                        Log.e("PrivacyPolice", "Could not reconnect after enabling network");
-                    }
-                } else if (networkSafety == AccessPointSafety.UNTRUSTED) {
-                    // Make sure all other networks are disabled, by disabling them separately
-                    // (See previous comment to see why we don't disable all of them at the same
-                    // time)
-                    wifiManager.disableNetwork(network.networkId);
-                } else if (networkSafety == AccessPointSafety.UNKNOWN) {
-                    wifiManager.disableNetwork(network.networkId);
-                    notificationShown = true;
+        List<WifiConfiguration> networkList = wifiManager.getConfiguredNetworks();
+        // Check for every network in our network list whether it should be enabled
+        for (WifiConfiguration network : networkList) {
+            AccessPointSafety networkSafety = getNetworkSafety(network, scanResults);
+            if (networkSafety == AccessPointSafety.TRUSTED) {
+                Log.i("PrivacyPolice", "Enabling " + network.SSID);
+                // Do not disable other networks, as multiple networks may be available
+                wifiManager.enableNetwork(network.networkId, false);
+                // If we aren't already connected to a network, make sure that Android connects.
+                // This is required for devices running Android Lollipop (5.0) and up, because
+                // they would otherwise never connect.
+                if (!wifiManager.reconnect()) {
+                    Log.e("PrivacyPolice", "Could not reconnect after enabling network");
                 }
+            } else if (networkSafety == AccessPointSafety.UNTRUSTED) {
+                // Make sure all other networks are disabled, by disabling them separately
+                // (See previous comment to see why we don't disable all of them at the same
+                // time)
+                wifiManager.disableNetwork(network.networkId);
+            } else if (networkSafety == AccessPointSafety.UNKNOWN) {
+                wifiManager.disableNetwork(network.networkId);
+                notificationShown = true;
             }
-        } catch (NullPointerException npe) {
-            Log.e("PrivacyPolice", "Null pointer exception when handling networks. Wi-Fi was probably suddenly disabled after a scan.");
         }
 
         if (!notificationShown)
