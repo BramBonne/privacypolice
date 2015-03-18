@@ -3,7 +3,7 @@
 
     <string name="app_name">Polícia de Privacidade Wi-Fi</string>
     <string name="pref_onlyavailable">Proteção de Privacidade</string>
-    <string name="pref_onlyavailable_summ">Impedir que outras pessoas vejam sua lista de redes por apenas permitindo-los quando as redes estão na proximidade (não funcionará com hotspots ocultos)</string>
+    <string name="pref_onlyavailable_summ">Impedir que outras pessoas vejam sua lista de redes por apenas permitindo-los quando as redes estão na proximidade</string>
     <string name="pref_onlyknown">Proteção de Data</string>
     <string name="pref_onlyknown_summ">Apenas permitir conexões para aceder a pontos de acesso, quando estes tiverem disponíveis (por pedir-lhe a primeira vez que você se lige a um novo ponto de acesso)</string>
     <string name="ask_permission">Tem a certeza que a rede "%1$s" deve estar disponível agora?</string>

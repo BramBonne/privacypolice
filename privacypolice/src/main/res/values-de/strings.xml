@@ -3,7 +3,7 @@
 
     <string name="app_name">Wi-Fi Privacy Police</string>
     <string name="pref_onlyavailable">Privatsphäre</string>
-    <string name="pref_onlyavailable_summ">Schützen Sie sich davor, dass Fremde die Liste genutzter WLAN-Netwerke sehen, indem Sie einzelne Netzwerke nur aktivieren, wenn sie in Reichweite sind (es können Probleme mit versteckten Netzwerken auftreten).</string>
+    <string name="pref_onlyavailable_summ">Schützen Sie sich davor, dass Fremde die Liste genutzter WLAN-Netwerke sehen, indem Sie einzelne Netzwerke nur aktivieren, wenn sie in Reichweite sind.</string>
     <string name="pref_onlyknown">Datenschutz</string>
     <string name="pref_onlyknown_summ">Verbinden Sie sich nur mit WLAN-Zugangspunkten, wenn diese verfügbar sein sollten (Sie werden dazu beim ersten Mal vor dem Verbinden gefragt).</string>
     <string name="ask_permission">Sollte das Netzwerk "%1$s" jetzt verfügbar sein?</string>
