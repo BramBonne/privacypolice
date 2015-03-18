@@ -54,7 +54,7 @@ public class NotificationHandler {
      * @param BSSID The MAC address of the access point that triggered this (only used when we will block the AP)
      */
     public void askNetworkPermission(String SSID, String BSSID) {
-        Log.d("WiFiPolice", "Asking permission for " + SSID + " (" + BSSID + ")");
+        Log.d("PrivacyPolice", "Asking permission for " + SSID + " (" + BSSID + ")");
         // Intent that will be used when the user allows the network
         Intent addIntent = new Intent(ctx, PermissionChangeReceiver.class);
         addIntent.putExtra("SSID", SSID).putExtra("BSSID", BSSID).putExtra("enable", true);

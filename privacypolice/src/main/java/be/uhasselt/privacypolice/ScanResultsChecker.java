@@ -102,7 +102,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
 
         try {
             List<ScanResult> scanResults = wifiManager.getScanResults();
-            Log.d("WiFiPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
+            Log.d("PrivacyPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
 
             // Collect number of found networks, if allowed by user
             /*Analytics analytics = new Analytics(ctx);
@@ -113,14 +113,14 @@ public class ScanResultsChecker extends BroadcastReceiver {
             for (WifiConfiguration network : networkList) {
                 AccessPointSafety networkSafety = getNetworkSafety(network, scanResults);
                 if (networkSafety == AccessPointSafety.TRUSTED) {
-                    Log.i("WiFiPolice", "Enabling " + network.SSID);
+                    Log.i("PrivacyPolice", "Enabling " + network.SSID);
                     // Do not disable other networks, as multiple networks may be available
                     wifiManager.enableNetwork(network.networkId, false);
                     // If we aren't already connected to a network, make sure that Android connects.
                     // This is required for devices running Android Lollipop (5.0) and up, because
                     // they would otherwise never connect.
                     if (!wifiManager.reconnect()) {
-                        Log.e("WifiPolice", "Could not reconnect after enabling network");
+                        Log.e("PrivacyPolice", "Could not reconnect after enabling network");
                     }
                 } else if (networkSafety == AccessPointSafety.UNTRUSTED) {
                     // Make sure all other networks are disabled, by disabling them separately
@@ -133,7 +133,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
                 }
             }
         } catch (NullPointerException npe) {
-            Log.e("WiFiPolice", "Null pointer exception when handling networks. Wi-Fi was probably suddenly disabled after a scan.");
+            Log.e("PrivacyPolice", "Null pointer exception when handling networks. Wi-Fi was probably suddenly disabled after a scan.");
         }
 
         if (!notificationShown)
@@ -192,7 +192,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
                         // Not an allowed BSSID
                         if (prefs.getBlockedBSSIDs(scanResult.SSID).contains(scanResult.BSSID)) {
                             // This SSID was explicitly blocked by the user!
-                            Log.w("WiFiPolice", "Spoofed network for " + scanResult.SSID + " detected! (BSSID is " + scanResult.BSSID + ")");
+                            Log.w("PrivacyPolice", "Spoofed network for " + scanResult.SSID + " detected! (BSSID is " + scanResult.BSSID + ")");
                             return AccessPointSafety.UNTRUSTED;
                         } else {
                             // We don't know yet whether the user wants to allow this network
