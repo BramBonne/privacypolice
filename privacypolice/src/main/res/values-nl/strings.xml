@@ -5,13 +5,13 @@
 <string name="pref_onlyavailable_summ">Voorkom dat andere mensen je netwerklijst kunnen zien door netwerken enkel te activeren wanneer ze beschikbaar zijn</string>
 <string name="pref_onlyknown">Data bescherming</string>
 <string name="pref_onlyknown_summ">Laat enkel verbindingen toe wanneer we zeker zijn dat het netwerk beschikbaar is (er wordt voor elk netwerk één keer gevraagd of het beschikbaar zou moeten zijn op de huidige locatie)</string>
-    <string name="ask_permission">Bent u zeker dat \"%1$s\" hier aanwezig is?</string>
+    <string name="ask_permission">Ben je zeker dat \"%1$s\" hier aanwezig is?</string>
     <string name="yes">Ja</string>
     <string name="no">Nee</string>
     <string name="permission_header">\"%1$s\" lijkt beschikbaar</string>
     <string name="action_settings">Instellingen</string>
     <string name="info_string">Wi-Fi Privacy Police zal je automatisch beschermen. Je kan dit venster gewoon sluiten.</string>
-    <string name="clear_hotspots">Vergeet alle hotspots</string>
+    <string name="clear_hotspots">Vergeet alle gekende hotspots</string>
     <string name="clear_hotspots_summ">Klik hier om alle vertrouwde en onvertrouwde hotspots te vergeten</string>
     <string name="dialog_clearhotspots">Ben je zeker dat je alle vertrouwde en onvertrouwde hotspots wil vergeten? Dit zal ervoor zorgen dat Privacy Police je voor elke hotspot opnieuw zal vragen of je ermee wil verbinden</string>
     <string name="dialog_clearhotspots_yes">Verwijder</string>
@@ -20,7 +20,7 @@
     <string name="pref_tracking_summ">Laat toe om periodiek anonieme gebruikersstatistieken, zoals frequentie van het gebruik van de applicatie, toe om verder onderzoek te helpen. We verzamelen geen persoonlijke informatie, zoals netwerknamen.</string>
     <string name="modify_hotspots">Lijst van hotspots</string>
     <string name="modify_hotspots_summ">Verwijder hotspots uit de lijst van vertrouwde en geblokkeerde hotspots (geavanceerd)</string>
-    <string name="dialog_removetrustedmac">Bent u zeker dat u hotspot \"%1$s\" wil verwijderen?</string>
+    <string name="dialog_removetrustedmac">Ben je zeker dat je hotspot \"%1$s\" wilt verwijderen?</string>
     <string name="dialog_remove">Verwijder</string>
-    <string name="dialog_clearhotspotsformac">Bent u zeker dat u alle hotspots voor het netwerk \"%1$s\" wil verwijderen?</string>
+    <string name="dialog_clearhotspotsformac">Ben je zeker dat je alle hotspots voor het netwerk \"%1$s\" wilt verwijderen?</string>
 </resources>
