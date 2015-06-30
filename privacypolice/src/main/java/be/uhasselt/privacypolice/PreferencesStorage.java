@@ -41,7 +41,6 @@ public class PreferencesStorage {
     // String used to identify MAC addresses of allowed access points
     private final String ALLOWED_BSSID_PREFIX = "ABSSID//";
     private final String BLOCKED_BSSID_PREFIX = "BBSSID//";
-
     public PreferencesStorage(Context ctx) {
         this.prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         this.wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
@@ -52,12 +51,19 @@ public class PreferencesStorage {
         }
     }
 
+
+    public static final String TRUST_EAP_ACCESS_POINTS = "trustEapAccessPoints";
+
     public boolean getEnableOnlyAvailableNetworks() {
         return prefs.getBoolean("enableOnlyAvailableNetworks", true);
     }
 
     public boolean getOnlyConnectToKnownAccessPoints() {
         return prefs.getBoolean("onlyConnectToKnownAccessPoints", false);
+    }
+
+    public boolean getTrustEap() {
+        return prefs.getBoolean(TRUST_EAP_ACCESS_POINTS, false);
     }
 
     /**

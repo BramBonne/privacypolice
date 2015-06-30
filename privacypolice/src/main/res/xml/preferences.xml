@@ -15,6 +15,16 @@
         android:defaultValue="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <SwitchPreference
+        android:key="trustEapAccessPoints"
+        android:title="@string/pref_trustEapAccessPoints"
+        android:summary="@string/pref_trustEapAccessPoints_summ"
+        android:dependency="onlyConnectToKnownAccessPoints"
+        android:defaultValue="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        />
     <!--CheckBoxPreference
         android:key="trackingAllowed"
         android:title="@string/pref_tracking"

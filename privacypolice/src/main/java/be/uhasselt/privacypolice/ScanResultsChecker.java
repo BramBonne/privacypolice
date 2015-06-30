@@ -19,12 +19,15 @@
 
 package be.uhasselt.privacypolice;
 
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiEnterpriseConfig;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.util.Log;
 
 import java.util.List;
@@ -170,7 +173,38 @@ public class ScanResultsChecker extends BroadcastReceiver {
         // Strip double quotes (") from the SSID string
         String plainSSID = network.SSID.substring(1, network.SSID.length() - 1);
 
-        return getNetworkSafety(plainSSID, scanResults);
+        return getNetworkSafety(plainSSID, scanResults, network);
+    }
+
+    /**
+     * Checks whether the given network configuration is EAP enabled. Note that the checked field is
+     * only available in API 18 (JELLY_BEAN_MR2), hence the hardcoded negative response for older
+     * platforms.
+     *
+     * @param network The network that should be checked
+     * @return true if the given network is EAP enabled
+     * @see WifiConfiguration#enterpriseConfig
+     */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    protected boolean isEapEnabled(final WifiConfiguration network) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            return network.enterpriseConfig != null && network.enterpriseConfig.getEapMethod() != WifiEnterpriseConfig.Eap.NONE;
+        }
+        return false;
+    }
+
+
+    /**
+     * Check whether the given ScanResult is advertising EAP authentication
+     *
+     * @param scanResult
+     * @return
+     */
+    protected boolean isEapEnabled(final ScanResult scanResult) {
+        // see http://w1.fi/cgit/hostap/tree/wpa_supplicant/ctrl_iface.c?id=7b42862ac87f333b0efb0f0bae822dcdf606bc69#n2169
+        // see http://w1.fi/cgit/hostap/tree/wpa_supplicant/ctrl_iface.c?id=7b42862ac87f333b0efb0f0bae822dcdf606bc69#n2055
+        // see http://w1.fi/cgit/hostap/tree/src/common/wpa_common.c?id=7b42862ac87f333b0efb0f0bae822dcdf606bc69#n1387
+        return scanResult.capabilities.startsWith("[WPA2-EAP-");
     }
 
     /**
@@ -182,6 +216,21 @@ public class ScanResultsChecker extends BroadcastReceiver {
      *          specify anything yet
      */
     public AccessPointSafety getNetworkSafety(String SSID, List<ScanResult> scanResults) {
+        return getNetworkSafety(SSID, scanResults, null);
+    }
+
+    /**
+     * Checks whether we should allow connection to a given SSID, based on the user's preferences
+     * It will also ask the user if it is unknown whether the network should be trusted.
+     * @param SSID The SSID of the network that should be checked
+     * @param scanResults The networks that are currently available
+     * @param wifiConfiguration Network being checked (complements the {@code SSID}
+     *                          arguments), used for EAP consideration
+     * @return TRUSTED or UNTRUSTED, based on the user's preferences, or UNKNOWN if the user didn't
+     *          specify anything yet
+     */
+    protected AccessPointSafety getNetworkSafety(String SSID, List<ScanResult> scanResults, WifiConfiguration wifiConfiguration) {
+        final boolean trustEap = prefs.getTrustEap();
         for (ScanResult scanResult : scanResults) {
             if (scanResult.SSID.equals(SSID)) {
                 // Check whether the user wants to filter by MAC address
@@ -200,6 +249,12 @@ public class ScanResultsChecker extends BroadcastReceiver {
                             Log.w("PrivacyPolice", "Spoofed network for " + scanResult.SSID + " detected! (BSSID is " + scanResult.BSSID + ")");
                             return AccessPointSafety.UNTRUSTED;
                         } else {
+                            if (trustEap && isEapEnabled(scanResult) && wifiConfiguration != null && isEapEnabled(wifiConfiguration)) {
+                                if (Log.isLoggable("PrivacyPolice", Log.VERBOSE)) {
+                                    Log.v("PrivacyPolice", "Allowing EAP network " + wifiConfiguration);
+                                }
+                                return AccessPointSafety.TRUSTED;
+                            }
                             // We don't know yet whether the user wants to allow this network
                             // Ask the user what needs to be done
                             notificationHandler.askNetworkPermission(scanResult.SSID, scanResult.BSSID);
