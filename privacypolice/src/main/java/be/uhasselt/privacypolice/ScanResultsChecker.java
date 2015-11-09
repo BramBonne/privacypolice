@@ -129,8 +129,8 @@ public class ScanResultsChecker extends BroadcastReceiver {
                 connectTo(network.networkId);
             } else if (networkSafety == AccessPointSafety.UNTRUSTED) {
                 // Make sure all other networks are disabled, by disabling them separately
-                // (See previous comment to see why we don't disable all of them at the same
-                // time)
+                // (See comment in connectTo() method to see why we don't disable all of them at the
+                // same time)
                 wifiManager.disableNetwork(network.networkId);
             } else if (networkSafety == AccessPointSafety.UNKNOWN) {
                 wifiManager.disableNetwork(network.networkId);
