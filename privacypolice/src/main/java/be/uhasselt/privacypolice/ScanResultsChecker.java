@@ -22,6 +22,8 @@ package be.uhasselt.privacypolice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -46,6 +48,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
     private static long lastCheck = 0;
     private static PreferencesStorage prefs = null;
     private static WifiManager wifiManager = null;
+    private static ConnectivityManager connectivityManager = null;
     private static NotificationHandler notificationHandler = null;
 
     /**
@@ -71,6 +74,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
      */
     public void init(Context ctx) {
         wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
+        connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
         prefs = new PreferencesStorage(ctx);
         notificationHandler = new NotificationHandler(ctx);
     }
@@ -122,14 +126,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
             AccessPointSafety networkSafety = getNetworkSafety(network, scanResults);
             if (networkSafety == AccessPointSafety.TRUSTED) {
                 Log.i("PrivacyPolice", "Enabling " + network.SSID);
-                // Do not disable other networks, as multiple networks may be available
-                wifiManager.enableNetwork(network.networkId, false);
-                // If we aren't already connected to a network, make sure that Android connects.
-                // This is required for devices running Android Lollipop (5.0) and up, because
-                // they would otherwise never connect.
-                if (!wifiManager.reconnect()) {
-                    Log.e("PrivacyPolice", "Could not reconnect after enabling network");
-                }
+                connectTo(network.networkId);
             } else if (networkSafety == AccessPointSafety.UNTRUSTED) {
                 // Make sure all other networks are disabled, by disabling them separately
                 // (See previous comment to see why we don't disable all of them at the same
@@ -145,6 +142,27 @@ public class ScanResultsChecker extends BroadcastReceiver {
             // Disable previous notifications, to make sure that we only request permission for the
             // currently available networks (and not at the wrong location)
             notificationHandler.disableNotifications();
+    }
+
+    /**
+     * Enable a given Wi-Fi network, and force Android to connect to it. This function makes sure
+     * that connecting also works in Android 5.0 and up.
+     * @param networkId The id of the network (found in its configuration) to enable
+     */
+    private void connectTo(int networkId) {
+        // Do not disable other networks, as multiple networks may be available
+        wifiManager.enableNetwork(networkId, false);
+        // If we aren't already connected to a network, make sure that Android connects.
+        // This is required for devices running Android Lollipop (5.0) and up, because
+        // they would otherwise never connect.
+        wifiManager.reconnect();
+        // In some instances (since wpa_supplicant 2.3), even the previous is not sufficient
+        // Check if we are in a CONNECTING state, or reassociate to force connection
+        NetworkInfo wifiState = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (!wifiState.isConnectedOrConnecting()) {
+            Log.i("PrivacyPolice", "Reassociating, becase WifiManager doesn't seem to be eager to reconnect.");
+            wifiManager.reassociate();
+        }
     }
 
     /**

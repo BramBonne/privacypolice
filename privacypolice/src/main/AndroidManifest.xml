@@ -3,12 +3,15 @@
     package="be.uhasselt.privacypolice" >
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!-- The next two permissions are only used for analytics. See Analytics.java for details -->
-    <!--uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /-->
 
+    <!-- The next two permissions are only used for analytics. See Analytics.java for details -->
+    <!--
+uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /
+    -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -32,19 +35,19 @@
         </activity>
         <!-- Receive all scan results in ScanResultsChecker class -->
         <receiver
-            android:name="be.uhasselt.privacypolice.ScanResultsChecker"
-            android:enabled="true" >
+            android:name=".ScanResultsChecker"
+            android:enabled="true"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.net.wifi.SCAN_RESULTS" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name="be.uhasselt.privacypolice.PermissionChangeReceiver"
+            android:name=".PermissionChangeReceiver"
             android:enabled="true" />
         <activity
-            android:name="be.uhasselt.privacypolice.AskPermissionActivity"
-            android:theme="@android:style/Theme.DeviceDefault.Dialog"
+            android:name=".AskPermissionActivity"
             android:excludeFromRecents="true"
             android:parentActivityName=".PreferencesActivity" >
             <meta-data
@@ -52,8 +55,10 @@
                 android:value=".PreferencesActivity" />
         </activity>
         <!-- Used for analytics. See Analytics.java for details -->
-        <!--meta-data android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" /-->
+        <!--
+            meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" /
+        -->
     </application>
 
 </manifest>
