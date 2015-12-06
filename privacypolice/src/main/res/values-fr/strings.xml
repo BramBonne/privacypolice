@@ -3,9 +3,9 @@
 
     <string name="app_name">Wi-Fi Privacy Police</string>
     <string name="pref_onlyavailable">Protection de la vie privée</string>
-    <string name="pref_onlyavailable_summ">Empêche que d\'autres personnes puissent accéder à la liste des points d\'accès connus</string>
+    <string name="pref_onlyavailable_summ">Empêcher que d\'autres personnes puissent accéder à votre liste des points d\'accès connus</string>
     <string name="pref_onlyknown">Protection des données</string>
-    <string name="pref_onlyknown_summ">N\'autoriser que les connexions aux points d\'accès de confiance (une confirmation vous sera demandée lors de la première connexion)</string>
+    <string name="pref_onlyknown_summ">Autoriser que les connexions aux points d\'accès de confiance (une confirmation vous sera demandée lors de la première connexion)</string>
     <string name="ask_permission">Faites-vous confiance au réseau "%1$s"\u00a0?</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
