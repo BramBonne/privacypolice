@@ -18,7 +18,7 @@
     <string name="dialog_clearhotspots_yes">Retirer</string>
     <string name="dialog_clearhotspots_no">Annuler</string>
     <string name="dialog_clearhotspotsformac">Êtes-vous sûr de vouloir retirer tous les points d\'accès du réseau \"%1$s\"\u00a0?</string>
-    <string name="pref_tracking">Autoriser les statistiques d'utilisation anonymes</string>
+    <string name="pref_tracking">Autoriser les statistiques d\'utilisation anonymes</string>
     <string name="pref_tracking_summ">Activer cette option aide au développement en envoyant périodiquement des données anonymes, comme par exemple si vous vous servez encore de l\'application. Nous ne collectons pas d\'informations personnelles telles que les noms des réseaux.</string>
     <string name="modify_hotspots">Points d\'accès connus</string>
     <string name="modify_hotspots_summ">Retirer les points d\'accès de la liste de confiance ou de celle des points d\'accès bloqués (avancé)</string>
