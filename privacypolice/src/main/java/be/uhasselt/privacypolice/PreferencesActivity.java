@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -61,6 +62,9 @@ public class PreferencesActivity extends Activity {
 
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.preferences);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                findPreference(PreferencesStorage.TRUST_EAP_ACCESS_POINTS).setEnabled(true);
+            }
             try {
                 SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
                 prefs.registerOnSharedPreferenceChangeListener(this);

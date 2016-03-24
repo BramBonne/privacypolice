@@ -24,5 +24,7 @@
     <string name="modify_hotspots_summ">Remove hotspots from your list of trusted and blocked hotspots (advanced)</string>
     <string name="dialog_removetrustedmac">Are you sure you want to remove hotspot \"%1$s\"?</string>
     <string name="dialog_remove">Remove</string>
+    <string name="pref_trustEapAccessPoints">Relax data protection for EAP hotspots</string>
+    <string name="pref_trustEapAccessPoints_summ">Remove requirement for explicit MAC address whitelisting for EAP hotspots matching a known EAP configuration</string>
 
 </resources>
