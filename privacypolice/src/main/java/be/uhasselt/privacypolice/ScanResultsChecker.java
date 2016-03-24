@@ -19,14 +19,17 @@
 
 package be.uhasselt.privacypolice;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.util.List;
@@ -50,6 +53,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
     private static WifiManager wifiManager = null;
     private static ConnectivityManager connectivityManager = null;
     private static NotificationHandler notificationHandler = null;
+    private static Context context = null;
 
     /**
      * Default constructor allowing to use this class as a receiver.
@@ -77,6 +81,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
         connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
         prefs = new PreferencesStorage(ctx);
         notificationHandler = new NotificationHandler(ctx);
+        context = ctx;
     }
 
     /**
@@ -95,6 +100,9 @@ public class ScanResultsChecker extends BroadcastReceiver {
         lastCheck = System.currentTimeMillis();
 
         try {
+            if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.e("PrivacyPolice", "I don't seem to have the correct runtime permission!");
+            }
             List<ScanResult> scanResults = wifiManager.getScanResults();
             Log.d("PrivacyPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
             checkResults(scanResults);
