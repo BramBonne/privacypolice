@@ -92,6 +92,8 @@ public class ScanResultsChecker extends BroadcastReceiver {
     public void onReceive(Context ctx, Intent intent) {
         if (wifiManager == null) // TODO: make this class a singleton
             init(ctx);
+        // Make sure the wakelockHandler keeps running (to prevent Android 6.0 and up from completely suspending our operations)
+        WakelockHandler.getInstance(ctx).ensureAwake();
 
         // WiFi scan performed
         // Older devices might try to scan constantly. Allow them some rest by checking max. once every 0.5 seconds
@@ -168,7 +170,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
         // Check if we are in a CONNECTING state, or reassociate to force connection
         NetworkInfo wifiState = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (!wifiState.isConnectedOrConnecting()) {
-            Log.i("PrivacyPolice", "Reassociating, becase WifiManager doesn't seem to be eager to reconnect.");
+            Log.i("PrivacyPolice", "Reassociating, because WifiManager doesn't seem to be eager to reconnect.");
             wifiManager.reassociate();
         }
     }

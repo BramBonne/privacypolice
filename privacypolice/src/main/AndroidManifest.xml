@@ -48,6 +48,9 @@ uses-permission android:name="android.permission.INTERNET" />
         <receiver
             android:name=".PermissionChangeReceiver"
             android:enabled="true" />
+        <receiver
+            android:name=".WakelockHandler"
+            android:enabled="true" />
         <activity
             android:name=".AskPermissionActivity"
             android:excludeFromRecents="true"
