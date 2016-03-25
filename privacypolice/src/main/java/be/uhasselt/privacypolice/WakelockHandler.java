@@ -19,17 +19,13 @@
 
 package be.uhasselt.privacypolice;
 
-import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.util.Log;
-
-import java.util.Calendar;
 
 /**
  * This class makes sure that AppStandby on Android 6.0 and up does not interfere with PrivacyPolice
@@ -38,6 +34,8 @@ import java.util.Calendar;
  * by the OS, whereas PrivacyPolice (having no Activities that are visited regularly by the user)
  * is kept idle, preventing the results of a scan from being passed on to to the
  * PermissionChangeReceiver, and preventing Wi-Fi access for the entire OS.
+ * It works by triggering an alarm approximately every 15 minutes, while still adhering to Android's
+ * doze mode.
  */
 public class WakelockHandler extends BroadcastReceiver {
     private static WakelockHandler instance = null;
