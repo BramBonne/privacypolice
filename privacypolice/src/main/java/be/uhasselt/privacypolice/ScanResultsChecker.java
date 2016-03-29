@@ -29,6 +29,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -174,11 +175,17 @@ public class ScanResultsChecker extends BroadcastReceiver {
         wifiManager.reconnect();
         // In some instances (since wpa_supplicant 2.3), even the previous is not sufficient
         // Check if we are in a CONNECTING state, or reassociate to force connection
-        NetworkInfo wifiState = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (!wifiState.isConnectedOrConnecting()) {
-            Log.i("PrivacyPolice", "Reassociating, because WifiManager doesn't seem to be eager to reconnect.");
-            wifiManager.reassociate();
-        }
+        Handler handler = new Handler();
+        // Wait for 1 second before checking
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                NetworkInfo wifiState = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                if (!wifiState.isConnectedOrConnecting()) {
+                    Log.i("PrivacyPolice", "Reassociating, because WifiManager doesn't seem to be eager to reconnect.");
+                    wifiManager.reassociate();
+                }
+            }
+        }, 1000);
     }
 
     /**
