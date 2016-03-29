@@ -23,4 +23,6 @@
     <string name="dialog_removetrustedmac">Ben je zeker dat je hotspot \"%1$s\" wilt verwijderen?</string>
     <string name="dialog_remove">Verwijder</string>
     <string name="dialog_clearhotspotsformac">Ben je zeker dat je alle hotspots voor het netwerk \"%1$s\" wilt verwijderen?</string>
+    <string name="location_permission_header">Locatietoegang uitgeschakeld</string>
+    <string name="location_permission_explanation">Wi-Fi PrivacyPolice heeft (beperkte) locatietoegang nodig om correct te functioneren. Klik hier om het probleem op te lossen.</string>
 </resources>

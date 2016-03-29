@@ -24,5 +24,6 @@
     <string name="modify_hotspots_summ">Retirer les points d\'accès de la liste de confiance ou de celle des points d\'accès bloqués (avancé)</string>
     <string name="dialog_removetrustedmac">Êtes-vous sûr de vouloir retirer le point d\'accès \"%1$s\" de cette liste\u00a0?</string>
     <string name="dialog_remove">Retirer</string>
-
+    <string name="location_permission_header">Location access disabled</string>
+    <string name="location_permission_explanation">Wi-Fi PrivacyPolice needs (limited) location access in order to function correctly. Click here to resolve the problem.</string>
 </resources>
