@@ -36,6 +36,7 @@ import android.util.Log;
  * PermissionChangeReceiver, and preventing Wi-Fi access for the entire OS.
  * It works by triggering an alarm approximately every 15 minutes, while still adhering to Android's
  * doze mode.
+ * TODO: check if this is still needed after the location services fix
  */
 public class WakelockHandler extends BroadcastReceiver {
     private static WakelockHandler instance = null;

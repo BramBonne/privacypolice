@@ -65,7 +65,7 @@ public class PermissionChangeReceiver extends BroadcastReceiver {
     }
 
     private void removeNotification() {
-        NotificationManager mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.cancel(0);
+        NotificationHandler notificationHandler = new NotificationHandler(ctx);
+        notificationHandler.cancelPermissionRequest();
     }
 }
