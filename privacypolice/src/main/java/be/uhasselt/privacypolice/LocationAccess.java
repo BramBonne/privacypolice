@@ -1,9 +1,13 @@
 package be.uhasselt.privacypolice;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 /**
  * Used in Android 5.0 and up, because Location provider needs to be enabled in order to receive
@@ -25,6 +29,10 @@ public class LocationAccess extends BroadcastReceiver {
         if (android.os.Build.VERSION.SDK_INT < 21) {
             // Location access is not needed on Android versions < 5.0
             return true;
+        }
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.e("PrivacyPolice", "I don't seem to have the correct runtime permission!");
+            return false;
         }
         getLocationManager(context);
         return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);

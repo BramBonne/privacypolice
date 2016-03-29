@@ -19,18 +19,15 @@
 
 package be.uhasselt.privacypolice;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.util.List;
@@ -109,9 +106,6 @@ public class ScanResultsChecker extends BroadcastReceiver {
         lastCheck = System.currentTimeMillis();
 
         try {
-            if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Log.e("PrivacyPolice", "I don't seem to have the correct runtime permission!");
-            }
             List<ScanResult> scanResults = wifiManager.getScanResults();
             Log.d("PrivacyPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
             checkResults(scanResults);
