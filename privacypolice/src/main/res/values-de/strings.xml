@@ -25,5 +25,9 @@
     <string name="dialog_remove">Remove</string>
     <string name="dialog_clearhotspotsformac">Are you sure you want to remove all hotspots for the network \"%1$s\"?</string>
     <string name="location_permission_header">Location access disabled</string>
-    <string name="location_permission_explanation">Wi-Fi PrivacyPolice needs (limited) location access in order to function correctly. Click here to resolve the problem.</string>
+    <string name="location_permission_explanation">Wi-Fi PrivacyPolice might need (limited) location access in order to function correctly. Click here for more info.</string>
+    <string name="location_permission_full_explanation">Starting with Android version 6.0 (Marshmallow), apps can only view the list of Wi-Fi networks that are in range while location access is enabled. Your mileage may vary (depending on the device you\'re using, this might not be the case), but if you experience problems when using Wi-Fi PrivacyPolice, consider enabling location access. Coarse location access (only using Wi-Fi networks and cell towers, and not your actual GPS chip) should be sufficient.</string>
+    <string name="location_open_settings">Open location settings</string>
+    <string name="pref_locationnotice">Show location notice</string>
+    <string name="pref_locationnotice_summ">Remind me via a notification when coarse location access is disabled</string>
 </resources>

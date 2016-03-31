@@ -24,5 +24,9 @@
     <string name="dialog_remove">Verwijder</string>
     <string name="dialog_clearhotspotsformac">Ben je zeker dat je alle hotspots voor het netwerk \"%1$s\" wilt verwijderen?</string>
     <string name="location_permission_header">Locatietoegang uitgeschakeld</string>
-    <string name="location_permission_explanation">Wi-Fi PrivacyPolice heeft (beperkte) locatietoegang nodig om correct te functioneren. Klik hier om het probleem op te lossen.</string>
+    <string name="location_permission_explanation">Wi-Fi PrivacyPolice heeft (beperkte) locatietoegang nodig om correct te functioneren. Klik hier voor meer informatie.</string>
+    <string name="location_permission_full_explanation">Sinds Android versie 6.0 (Marshmallow) kunnen applicaties enkel de beschikbare Wi-Fi netwerken zijn wanneer locatietoegang is ingeschakeld. Dit verschilt van apparaat tot apparaat, maar indien je problemen ondervindt bij het gebruik van Wi-Fi Privacypolice, overweeg dan om locatietoegang in te schakelen. Beperkte toegang (waarbij enkel Wi-Fi netwerken en zendmasten, en niet de GPS chip gebruikt worden) zou voldoende moeten zijn.</string>
+    <string name="location_open_settings">Open locatie instellingen</string>
+    <string name="pref_locationnotice">Laat locatie waarschuwing zien</string>
+    <string name="pref_locationnotice_summ">Herinner me via een notificatie wanneer locatietoegang is uitgeschakeld</string>
 </resources>
