@@ -100,8 +100,8 @@ public class NotificationHandler {
     public void askLocationPermission() {
         Log.d("PrivacyPolice", "Asking location permission");
         Resources res = context.getResources();
-        Intent locationSettingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 3, locationSettingsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent locationNoticeIntent = new Intent(context, LocationNoticeActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 3, locationNoticeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setPriority(Notification.PRIORITY_HIGH)

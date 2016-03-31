@@ -92,12 +92,6 @@ public class ScanResultsChecker extends BroadcastReceiver {
             init(ctx);
         // Make sure the wakelockHandler keeps running (to prevent Android 6.0 and up from completely suspending our operations)
         WakelockHandler.getInstance(ctx).ensureAwake();
-        // Make sure coarse location access is enabled (needed to get scan results on Android 5.0 and up)
-        if (!(new LocationAccess()).isNetworkLocationEnabled(ctx)) {
-            notificationHandler.askLocationPermission();
-            // Keep last known configuration
-            return;
-        }
 
         // WiFi scan performed
         // Older devices might try to scan constantly. Allow them some rest by checking max. once every 0.5 seconds

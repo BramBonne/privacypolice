@@ -30,6 +30,8 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 /**
  * Since PrivacyPolice does not need a real MainActivity, this class is used to modify the
@@ -43,12 +45,27 @@ public class PreferencesActivity extends Activity {
         setContentView(R.layout.activity_preferences);
 
         // Display the preferences fragment as the main content.
-        FragmentManager mFragmentManager = getFragmentManager();
-        FragmentTransaction mFragmentTransaction = mFragmentManager
-                .beginTransaction();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         PrefsFragment prefsFragment = new PrefsFragment();
-        mFragmentTransaction.replace(R.id.inflatable_prefs, prefsFragment);
-        mFragmentTransaction.commit();
+        fragmentTransaction.replace(R.id.inflatable_prefs, prefsFragment);
+        fragmentTransaction.commit();
+
+        // Show the location notice if location is disabled
+        TextView locationNotice = (TextView) findViewById(R.id.location_notice);
+        LocationAccess locationAccess = new LocationAccess();
+        if (!locationAccess.isNetworkLocationEnabled(getApplicationContext()))
+            locationNotice.setVisibility(View.VISIBLE);
+        else
+            locationNotice.setVisibility(View.GONE);
+    }
+
+    /**
+     * Called when location notification is clicked
+     */
+    public void openLocationNotice(View view) {
+        Intent intent = new Intent(this, LocationNoticeActivity.class);
+        startActivity(intent);
     }
 
     /**
