@@ -60,6 +60,10 @@ public class PreferencesStorage {
         return prefs.getBoolean("onlyConnectToKnownAccessPoints", false);
     }
 
+    public boolean getLocationNoticeEnabled() {
+        return prefs.getBoolean("showLocationNotice", true);
+    }
+
     /**
      * Will be enabled if we decide to implement tracking
      * @return

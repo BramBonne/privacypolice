@@ -98,6 +98,12 @@ public class NotificationHandler {
     }
 
     public void askLocationPermission() {
+        PreferencesStorage prefs = new PreferencesStorage(context);
+        if (!prefs.getLocationNoticeEnabled()) {
+            Log.d("PrivacyPolice", "Location nagging is disabled. Not showing notification");
+            return;
+        }
+
         Log.d("PrivacyPolice", "Asking location permission");
         Resources res = context.getResources();
         Intent locationNoticeIntent = new Intent(context, LocationNoticeActivity.class);
