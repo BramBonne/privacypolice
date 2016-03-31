@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/location_permission_full_explanation"
-        android:id="@+id/location_explanation"
-        android:padding="@dimen/activity_horizontal_margin" />
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/location_open_settings"
-        android:id="@+id/open_location_settings"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:onClick="openLocationSettings" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/location_permission_full_explanation"
+            android:id="@+id/location_explanation"
+            android:padding="@dimen/activity_horizontal_margin" />
 
-    <FrameLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/inflatable_locationprefs">
-    </FrameLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location_open_settings"
+            android:id="@+id/open_location_settings"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:onClick="openLocationSettings" />
 
+        <FrameLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/inflatable_locationprefs">
+        </FrameLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
