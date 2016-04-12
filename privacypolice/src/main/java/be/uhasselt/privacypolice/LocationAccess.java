@@ -26,8 +26,9 @@ public class LocationAccess extends BroadcastReceiver {
     }
 
     public boolean isNetworkLocationEnabled(Context context) {
-        if (android.os.Build.VERSION.SDK_INT < 21) {
-            // Location access is not needed on Android versions < 5.0
+        if (android.os.Build.VERSION.SDK_INT < 23) {
+            // Location access is not needed on Android versions < 6.0
+            // See https://code.google.com/p/android/issues/detail?id=185370 for more information
             return true;
         }
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
