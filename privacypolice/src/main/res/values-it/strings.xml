@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Wi-Fi Privacy Police</string>
+    <string name="pref_onlyavailable">Protezione della privacy</string>
+    <string name="pref_onlyavailable_summ">Evita che terze persone possano vedere la lista delle reti Wi-Fi a cui ti sei connesso, abilitandola solo quando le suddette reti sono rilevate</string>
+    <string name="pref_onlyknown">Protezione dei dati</string>
+    <string name="pref_onlyknown_summ">Abilita la connessione agli hotspot solo quando questi dovrebbero essere disponibili (alla prima connessione ad un nuovo hotspot viene richiesta una conferma)</string>
+    <string name="ask_permission">Sei sicuro che la rete "%1$s" dovrebbe essere disponibile in questo momento?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="permission_header">\"%1$s\" trovata</string>
+    <string name="action_settings">Opzioni</string>
+    <string name="info_string">Wi-Fi Privacy Police continuerá a proteggerti in background. Puoi chiudere questa finestra e smettere di preoccuparti che i tuoi dati sensibili, presenti nel dispositivo, vengano fatti trapelare.</string>
+    <string name="clear_hotspots">Pulisci tutti gli hotspots</string>
+    <string name="clear_hotspots_summ">Clicca qui per rimuovere tutti gli hotspot, fidati e non, dalla tua lista</string>
+    <string name="dialog_clearhotspots">Sei sicuro di voler rimuovere tutti gli hotspot, fidati e non? Privacy Police ti richiederá nuovamente di tutti questi hotspot nel caso l\'opzione sia stata abilitata</string>
+    <string name="dialog_clearhotspots_yes">Pulisci</string>
+    <string name="dialog_clearhotspots_no">Annulla</string>
+    <string name="dialog_clearhotspotsformac">Sei sicuro di voler rimuovere tutti gli hotspot per la rete \"%1$s\"?</string>
+    <string name="pref_tracking">Permetti statistiche anonime sull\'utilizzo</string>
+    <string name="pref_tracking_summ">Abilitando questa opzione aiuterai la ricerca futura, mandando statistiche anonime e periodiche sull\'utilizzo, come per esempio se stai utilizzando l\'app. Non raccogliamo informazioni che possano identificarti, come i nomi delle reti.</string>
+    <string name="modify_hotspots">Hotspot conosciuti</string>
+    <string name="modify_hotspots_summ">Rimuovi gli hotspot dalla tua lista degli hotspot abilitati e bloccati (avanzato)</string>
+    <string name="dialog_removetrustedmac">Sei sicuro di voler rimuovere l\'hotspot \"%1$s\"?</string>
+    <string name="dialog_remove">Rimuovi</string>
+    <string name="location_permission_header">Accesso alla posizione disabilitato</string>
+    <string name="location_permission_explanation">Wi-Fi PrivacyPolice potrebbe aver bisogno di accedere (in maniera limitata) alla tua posizione per poter funzionare correttamente. Clicca qui per maggiori informazioni.</string>
+    <string name="location_permission_full_explanation">A partire da Android 6.0 (Marshmallow), le applicazioni possono vedere la lista delle reti Wi-Fi sotto portata solo se l\'accesso alla posizione é abilitata. La situazione potrebbe essere diversa (a seconda del dispositivo che stai utilizzando), ma se hai dei problemi nell\'utilizzo di Wi-Fi PrivacyPolice, prova ad abilitare l\'accesso alla posizione. Un accesso sommario alla posizione (alle sole reti Wi-Fi ed alle celle, e non al vero e proprio GPS) dovrebbe essere sufficiente.</string>
+    <string name="location_open_settings">Apri le opzioni sulla posizione</string>
+    <string name="pref_locationnotice">Mostra nota sulla posizione</string>
+    <string name="pref_locationnotice_summ">Ricordami tramite una notifica quando l\'accesso alla posizione sommaria é disabilitata</string>
+</resources>
