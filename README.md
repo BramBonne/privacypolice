@@ -2,7 +2,7 @@
 
 Wi-Fi Privacy Police prevents your smartphone or tablet from leaking privacy sensitive information via Wi-Fi networks. It does this in two ways:
 
-* It prevents your smartphone from sending out the names of Wi-Fi networks it wants to connect to over the air. This makes sure that other people in your surroundings can not see the networks you've connecte to, and the places you've visited.
+* It prevents your smartphone from sending out the names of Wi-Fi networks it wants to connect to over the air. This makes sure that other people in your surroundings can not see the networks you've connected to, and the places you've visited.
 * If your smartphone encounters an unknown access point with a known name (for example, a malicious access point pretending to be your home network), it asks whether you trust this access point before connecting. This makes sure that other people are not able to steal your data.
 
 Wi-Fi Privacy Police does not have any negative impact on your battery. In fact, you may see your battery life increase by using this app.
