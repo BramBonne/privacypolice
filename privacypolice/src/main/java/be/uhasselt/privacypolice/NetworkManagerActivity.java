@@ -169,20 +169,16 @@ public abstract class NetworkManagerActivity extends ListActivity {
             SSIDtext.setText(SSIDinfo.getName());
             // Make the 'signal strength' icon visible if the network is available
             ImageView signalStrengthImage = (ImageView) layout.findViewById(R.id.signalStrength);
-            if (SSIDinfo.isAvailable()) {
-                // Show signal strength if the network is available
-                signalStrengthImage.setVisibility(View.VISIBLE);
-                Log.v("PrivacyPolice", "Adding network " + SSIDinfo.getName() + " with signal strength " + SSIDinfo.getSignalStrength());
-                // Color signal strength teal (if trusted) or pink (if blocked)
-                String color = "teal";
-                if (SSIDinfo.getAccessPointSafety() == ScanResultsChecker.AccessPointSafety.UNTRUSTED)
-                    color = "pink";
-                String resourceName = "ic_wifi_signal_" + SSIDinfo.getSignalStrength() + "_" + color;
-                int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
-                signalStrengthImage.setImageResource(resourceId);
-            } else {
-                signalStrengthImage.setVisibility(View.GONE);
-            }
+            Log.v("PrivacyPolice", "Adding network " + SSIDinfo.getName() + " with signal strength " + SSIDinfo.getSignalStrength());
+            // Color signal strength teal (if trusted) or pink (if blocked)
+            String color = "teal";
+            if (SSIDinfo.getAccessPointSafety() == ScanResultsChecker.AccessPointSafety.UNTRUSTED)
+                color = "pink";
+            String resourceName = "ic_wifi_signal_" + SSIDinfo.getSignalStrength() + "_" + color;
+            if (SSIDinfo.getSignalStrength() == -1)
+                resourceName = "ic_wifi_unavailable_" + color;
+            int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
+            signalStrengthImage.setImageResource(resourceId);
 
             return layout;
         }

@@ -10,7 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 /**
- * Used in Android 5.0 and up, because Location provider needs to be enabled in order to receive
+ * Used in Android 6.0 and up, because Location provider needs to be enabled in order to receive
  * Wi-Fi scan results programmatically.
  */
 public class LocationAccess extends BroadcastReceiver {

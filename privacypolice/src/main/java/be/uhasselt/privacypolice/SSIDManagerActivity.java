@@ -94,7 +94,7 @@ public class SSIDManagerActivity extends NetworkManagerActivity {
 
             // Add all other (non-available) saved SSIDs to the list
             for (String SSID : knownSSIDs) {
-                ScanResultsChecker.AccessPointSafety networkSafety = scanResultsChecker.getNetworkSafety(SSID, scanResults);
+                ScanResultsChecker.AccessPointSafety networkSafety = ScanResultsChecker.AccessPointSafety.UNKNOWN;
                 networkList.add(new NetworkAvailability(SSID, -9999, networkSafety));
             }
             notifyDataSetChanged();
