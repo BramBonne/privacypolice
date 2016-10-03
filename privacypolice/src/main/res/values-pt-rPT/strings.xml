@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Wi-Fi Privacy Police</string>
+    <string name="pref_onlyavailable">Proteção de privacidade</string>
+    <string name="pref_onlyavailable_summ">Prevenir que outras pessoas vejam a sua lista de redes ativando-as apenas quando estiverem na proximidade</string>
+    <string name="pref_onlyknown">Proteção de dados</string>
+    <string name="pref_onlyknown_summ">Permitir apenas ligações a pontos de acesso quando estes deveriam estar disponíveis (ao perguntar-lhe na primeira vez que ligar a um novo ponto de acesso)</string>
+    <string name="ask_permission">Tem a certeza que a rede "%1$s" deveria estar disponível agora?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="permission_header">Encontrado \"%1$s\"</string>
+    <string name="action_settings">Definições</string>
+    <string name="info_string">O Wi-Fi Privacy Police continuará a proteção em segundo plano. Pode fechar esta janela e não se preocupar com as fugas de informação privada e sensível do seu dispositivo.</string>
+    <string name="clear_hotspots">Limpar todos os pontos de acesso</string>
+    <string name="clear_hotspots_summ">Clique aqui para remover todos os pontos de acesso confiáveis e não confiáveis da sua lista</string>
+    <string name="dialog_clearhotspots">Pretende mesmo remover todos os pontos de acesso confiáveis e não confiáveis? Após isto o Privacy Police perguntar-lhe-á em cada ponto de acesso se este deve ou não ser permitido</string>
+    <string name="dialog_clearhotspots_yes">Limpar</string>
+    <string name="dialog_clearhotspots_no">Cancelar</string>
+    <string name="dialog_clearhotspotsformac">Pretende mesmo remover todos os pontos de acesso da rede \"%1$s\"?</string>
+    <string name="pref_tracking">Permitir estatísticas de uso anónimas</string>
+    <string name="pref_tracking_summ">Permitir isto ajuda a investigação ao enviar periodicamente estatísticas de uso anónimas, como por exemplo, se ainda continua a usar a aplicação. Não recolhemos nenhuma informação pessoal identificativa, tal como nomes de redes.</string>
+    <string name="modify_hotspots">Pontos de acesso conhecidos</string>
+    <string name="modify_hotspots_summ">Remover pontos de acesso da sua lista de pontos de acesso confiáveis e bloqueados (avançado)</string>
+    <string name="dialog_removetrustedmac">Pretende mesmo remover o ponto de acesso \"%1$s\"?</string>
+    <string name="dialog_remove">Remover</string>
+    <string name="location_permission_header">Acesso à localização desativado</string>
+    <string name="location_permission_explanation">O Wi-Fi Privacy Police poderá precisar de acesso (limitado) à localização para poder funcionar corretamente. Clique aqui para mais informações.</string>
+    <string name="location_permission_full_explanation">A começar pela versão 6.0 do Android (Marshmallow), as aplicações apenas podem ver a lista de redes Wi-Fi que estão na proximidade se o acesso à localização for concedido. Pode variar consoante o caso (dependendo do dispositivo que estiver a usar, ou outro motivo), mas se experiênciar problemas ao usar o Wi-Fi Privacy Police, considere ativar o acesso à localização. Acesso à localização aproximada (usando apenas redes Wi-Fi e torres de telecomunicações e não propriamente o seu chip GPS) deverá ser suficiente.</string>
+    <string name="location_open_settings">Abrir definições de localização</string>
+    <string name="pref_locationnotice">Mostrar aviso de localização</string>
+    <string name="pref_locationnotice_summ">Lembrar-me com uma notificação quando a localização aproximada estiver desativada</string>
+</resources>
