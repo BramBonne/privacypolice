@@ -104,7 +104,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
             Log.d("PrivacyPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
             checkResults(scanResults);
         } catch (NullPointerException npe) {
-            Log.e("PrivacyPolice", "Null pointer exception when handling networks. Wi-Fi was probably suddenly disabled after a scan. Exception info: " + npe.getMessage());
+            Log.e("PrivacyPolice", "Null pointer exception when handling networks. Wi-Fi was probably suddenly disabled after a scan", npe);
         }
     }
 
@@ -126,6 +126,12 @@ public class ScanResultsChecker extends BroadcastReceiver {
         analytics.scanCompleted(scanResults.size());*/
 
         List<WifiConfiguration> networkList = wifiManager.getConfiguredNetworks();
+        if (networkList == null) {
+            Log.i("PrivacyPolice", "WifiManager did not return any configured networks. This is "+
+                "most likely caused by background location services being allowed to scan for " +
+                "Wi-Fi networks, while Wi-Fi is disabled. Keep all networks as before.");
+            return;
+        }
         // Check for every network in our network list whether it should be enabled
         for (WifiConfiguration network : networkList) {
             AccessPointSafety networkSafety = getNetworkSafety(network, scanResults);
