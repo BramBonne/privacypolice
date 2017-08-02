@@ -149,10 +149,11 @@ public class ScanResultsChecker extends BroadcastReceiver {
             }
         }
 
-        if (!notificationShown)
+        if (!notificationShown) {
             // Disable previous notifications, to make sure that we only request permission for the
             // currently available networks (and not at the wrong location)
             notificationHandler.disableNotifications();
+        }
     }
 
     /**
@@ -193,8 +194,17 @@ public class ScanResultsChecker extends BroadcastReceiver {
     public AccessPointSafety getNetworkSafety(WifiConfiguration network, List<ScanResult> scanResults) {
         // If all settings are disabled by the user, then allow every network
         // This effectively disables all of the app's functionalities
-        if (!(prefs.getEnableOnlyAvailableNetworks() || prefs.getOnlyConnectToKnownAccessPoints()))
+        if (!(prefs.getEnableOnlyAvailableNetworks() || prefs.getOnlyConnectToKnownAccessPoints())) {
             return AccessPointSafety.TRUSTED; // Allow every network
+        }
+        // If location access is disabled by the user (or if it is not granted to our app), allow
+        // every network (as otherwise PrivacyPolice would block normal operation of the phone).
+        // Rationale: a huge warning is displayed both as a notification, and in the main activity
+        // when the user does not enable location access. It is unfortunately the only way for us
+        // to view scan results
+        if (!LocationAccess.isNetworkLocationEnabled(context)) {
+            return AccessPointSafety.TRUSTED; // Allow every network
+        }
 
         // Always enable hidden networks, since they *need* to use directed probe requests
         // in order to be discovered. Note that using hidden SSID's does not add any

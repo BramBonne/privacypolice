@@ -8,20 +8,19 @@
         android:gravity="center_horizontal">
 
         <TextView
+            android:id="@+id/location_explanation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/location_permission_full_explanation"
-            android:id="@+id/location_explanation"
-            android:padding="@dimen/activity_horizontal_margin" />
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@string/location_permission_full_explanation" />
 
         <Button
+            android:id="@+id/open_location_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/location_open_settings"
-            android:id="@+id/open_location_settings"
+            android:onClick="checkAndRequestSettings"
             android:padding="@dimen/activity_horizontal_margin"
-            android:onClick="openLocationSettings" />
+            android:text="@string/location_open_settings" />
 
         <FrameLayout
             android:orientation="vertical"

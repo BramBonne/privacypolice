@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 22
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 26
+    buildToolsVersion '25.0.0'
 
     dependencies {
         // Used for analytics (retention rate etc. See Analytics.java for details)
@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 26
         versionCode 13
         versionName "2.2.4"
     }

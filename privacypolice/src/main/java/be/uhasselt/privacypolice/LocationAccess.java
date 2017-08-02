@@ -14,18 +14,7 @@ import android.util.Log;
  * Wi-Fi scan results programmatically.
  */
 public class LocationAccess extends BroadcastReceiver {
-    private LocationManager locationManager;
-
-    public LocationAccess() {
-        locationManager = null;
-    }
-
-    private void getLocationManager(Context context) {
-        if (locationManager == null)
-            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-    }
-
-    public boolean isNetworkLocationEnabled(Context context) {
+    public static boolean isNetworkLocationEnabled(Context context) {
         if (android.os.Build.VERSION.SDK_INT < 23) {
             // Location access is not needed on Android versions < 6.0
             // See https://code.google.com/p/android/issues/detail?id=185370 for more information
@@ -35,7 +24,7 @@ public class LocationAccess extends BroadcastReceiver {
             Log.e("PrivacyPolice", "I don't seem to have the correct runtime permission!");
             return false;
         }
-        getLocationManager(context);
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
