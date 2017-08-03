@@ -202,7 +202,9 @@ public class ScanResultsChecker extends BroadcastReceiver {
         // Rationale: a huge warning is displayed both as a notification, and in the main activity
         // when the user does not enable location access. It is unfortunately the only way for us
         // to view scan results
-        if (!LocationAccess.isNetworkLocationEnabled(context)) {
+        // Some devices still allow scan results to be passed on even if the location is disabled.
+        // In this case, we operate as normally by checking if any network is in range
+        if (!LocationAccess.isNetworkLocationEnabled(context) && scanResults.size() == 0) {
             return AccessPointSafety.TRUSTED; // Allow every network
         }
 
