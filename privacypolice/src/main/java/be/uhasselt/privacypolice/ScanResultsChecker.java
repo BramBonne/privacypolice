@@ -75,7 +75,8 @@ public class ScanResultsChecker extends BroadcastReceiver {
      * @param ctx The current context
      */
     public void init(Context ctx) {
-        wifiManager =  (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
+        // Use getApplicationContext() to prevent memory leaks on devices < Android N
+        wifiManager =  (WifiManager) ctx.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
         prefs = new PreferencesStorage(ctx);
         notificationHandler = new NotificationHandler(ctx);
@@ -155,7 +156,7 @@ public class ScanResultsChecker extends BroadcastReceiver {
         if (!notificationShown) {
             // Disable previous notifications, to make sure that we only request permission for the
             // currently available networks (and not at the wrong location)
-            notificationHandler.disableNotifications();
+            notificationHandler.disableNetworkNotifications();
         }
     }
 

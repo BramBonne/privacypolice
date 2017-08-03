@@ -22,11 +22,9 @@ package be.uhasselt.privacypolice;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -35,10 +33,10 @@ import android.util.Log;
  */
 public class NotificationHandler {
     public static final int PERMISSION_NOTIFICATION_ID = 0;
-    public static final int LOCATION_NOTIFICATION_ID = 1;
+    public static final int LOCATION_NOTIFICATION_ID = 81;
 
-    Context context = null;
-    NotificationManager notificationManager = null;
+    private Context context = null;
+    private NotificationManager notificationManager = null;
 
     NotificationHandler(Context ctx) {
         this.context = ctx;
@@ -46,11 +44,11 @@ public class NotificationHandler {
     }
 
     /**
-     * Disables all currently displayed notifications by PrivacyPolice. This allows us to remove
-     * stale networks.
+     * Disables all currently displayed network permissions notifications by PrivacyPolice. This
+     * allows us to remove stale networks.
      */
-    public void disableNotifications() {
-        notificationManager.cancelAll();
+    public void disableNetworkNotifications() {
+        notificationManager.cancel(PERMISSION_NOTIFICATION_ID);
     }
 
     /**
@@ -90,6 +88,7 @@ public class NotificationHandler {
                 .setContentIntent(activityPendingIntent)
                 .addAction(android.R.drawable.ic_delete, no, disablePendingIntent)
                 .addAction(android.R.drawable.ic_input_add, yes, addPendingIntent);
+        notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(PERMISSION_NOTIFICATION_ID, notificationBuilder.build());
     }
 
@@ -108,17 +107,19 @@ public class NotificationHandler {
         Resources res = context.getResources();
         Intent locationNoticeIntent = new Intent(context, LocationNoticeActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 3, locationNoticeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_notification)
-                .setPriority(Notification.PRIORITY_HIGH)
                 .setContentTitle(res.getString(R.string.location_permission_header))
                 .setContentText(res.getString(R.string.location_permission_explanation))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(res.getString(R.string.location_permission_explanation)))
+                .setOngoing(true)
                 .setContentIntent(pendingIntent);
         notificationManager.notify(LOCATION_NOTIFICATION_ID, notificationBuilder.build());
     }
 
     public void cancelLocationPermissionRequest() {
+        Log.d("PrivacyPolice", "Canceling location permission request");
         notificationManager.cancel(LOCATION_NOTIFICATION_ID);
     }
 }

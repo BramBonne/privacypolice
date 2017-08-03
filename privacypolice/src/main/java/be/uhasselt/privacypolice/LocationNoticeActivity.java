@@ -79,6 +79,8 @@ public class LocationNoticeActivity extends Activity{
                 openLocationSettings();
             }
         }
+        // Re-check if notification should be displayed
+        LocationAccess.checkAccessDisplayNotification(this);
     }
 
     /**
