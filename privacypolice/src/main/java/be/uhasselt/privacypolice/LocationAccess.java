@@ -33,12 +33,17 @@ public class LocationAccess extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
+        checkAccessDisplayNotification(context);
+    }
+
+    public static void checkAccessDisplayNotification(Context context) {
         NotificationHandler notificationHandler = new NotificationHandler(context);
 
         if (!isNetworkLocationEnabled(context)) {
             notificationHandler.askLocationPermission();
-        } else
+        } else {
             // Make sure no location permission request is shown
             notificationHandler.cancelLocationPermissionRequest();
+        }
     }
 }

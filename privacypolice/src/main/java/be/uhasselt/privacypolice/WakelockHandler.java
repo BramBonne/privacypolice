@@ -80,7 +80,10 @@ public class WakelockHandler extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.v("PrivacyPolice", "Waking up because of alarm");
+        // Start a Wi-Fi scan
         WifiManager wifiManager =  (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         wifiManager.startScan();
+        // Check our location permission
+        LocationAccess.checkAccessDisplayNotification(context);
     }
 }
