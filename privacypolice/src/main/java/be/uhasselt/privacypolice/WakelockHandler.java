@@ -83,7 +83,5 @@ public class WakelockHandler extends BroadcastReceiver {
         // Start a Wi-Fi scan
         WifiManager wifiManager =  (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         wifiManager.startScan();
-        // Check our location permission
-        LocationAccess.checkAccessDisplayNotification(context);
     }
 }

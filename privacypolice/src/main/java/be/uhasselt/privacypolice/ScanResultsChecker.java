@@ -99,6 +99,9 @@ public class ScanResultsChecker extends BroadcastReceiver {
             return;
         lastCheck = System.currentTimeMillis();
 
+        // Check our location permission, and request if needed
+        LocationAccess.checkAccessDisplayNotification(context);
+
         try {
             List<ScanResult> scanResults = wifiManager.getScanResults();
             Log.d("PrivacyPolice", "Wi-Fi scan performed, results are: " + scanResults.toString());
