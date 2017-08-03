@@ -54,9 +54,9 @@ public class PreferencesActivity extends Activity {
         // Show the location notice if location is disabled
         TextView locationNotice = (TextView) findViewById(R.id.location_notice);
         LocationAccess locationAccess = new LocationAccess();
-        if (!locationAccess.isNetworkLocationEnabled(getApplicationContext()))
+        if (!locationAccess.isNetworkLocationEnabled(getApplicationContext())) {
             locationNotice.setVisibility(View.VISIBLE);
-        else
+        } else
             locationNotice.setVisibility(View.GONE);
     }
 

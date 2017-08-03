@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.provider.Settings;
@@ -47,9 +48,17 @@ public class LocationNoticeActivity extends Activity{
         }
     }
 
-    public void openLocationSettings() {
+    private void openLocationSettings() {
         Intent locationSettingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         startActivity(locationSettingsIntent);
+    }
+
+    private void openAppSettings() {
+        Intent appSettingsIntent = new Intent();
+        appSettingsIntent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri packageName = Uri.fromParts("package", getPackageName(), null);
+        appSettingsIntent.setData(packageName);
+        startActivity(appSettingsIntent);
     }
 
     @Override
@@ -61,6 +70,9 @@ public class LocationNoticeActivity extends Activity{
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.i("PrivacyPolice", "User denied location access");
+            // Let the user enable this permission through the settings, because he may have ticked
+            // the 'do not ask me again' box.
+            openAppSettings();
         } else {
             // Check if we also need the user to enable location on their phone
             if (!LocationAccess.isNetworkLocationEnabled(this)) {
