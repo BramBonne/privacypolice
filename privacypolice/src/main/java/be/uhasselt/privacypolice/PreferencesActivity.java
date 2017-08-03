@@ -102,7 +102,8 @@ public class PreferencesActivity extends Activity {
             // Perform a rescan every time a preference has changed
             Log.v("PrivacyPolice", "Initiating rescan because preference " + key + " changed");
             try {
-                WifiManager wifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+                // getApplicationContext() to prevent memory leaks on devices < Android N
+                WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                 wifiManager.startScan();
             } catch (NullPointerException npe) {
                 Log.e("PrivacyPolice", "Could not get WifiManager from within prefsFragment");
